@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | My Shop</title>
+    <link rel="stylesheet" href="{% static 'css/first.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="first-page-container">
+        <h1>ยินดีต้อนรับสู่ร้านของเรา 🌿</h1>
+        <p>เราจัดจำหน่ายสินค้าธรรมชาติคุณภาพดี</p>
+        <a href="{% url 'home' %}" class="enter-button">เข้าสู่ร้านค้า</a>
+    </div>
+</body>
+</html>

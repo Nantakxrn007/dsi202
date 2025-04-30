@@ -1,0 +1,29 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+<div class="product-detail-container">
+    
+    <div class="top-bar">
+        <a href="{% url 'home' %}" class="back-button">← Back to Home</a>
+    </div>
+
+    <div class="product-detail">
+        <!-- ภาพสินค้า -->
+        <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+
+        <!-- ข้อมูลสินค้า -->
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <p class="product-price">${{ product.price }}</p>
+            <div class="product-description">
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

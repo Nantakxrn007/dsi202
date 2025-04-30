@@ -1,0 +1,62 @@
+<!-- templates/home.html -->
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="logo">
+            <a href="{% url 'home' %}">Treeveq</a> <!-- เปลี่ยนชื่อร้านได้ -->
+        </div>
+        <nav class="nav">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="">About</a>
+            <a href="">Contact</a>
+        </nav>
+        <form method="get" action="{% url 'home' %}" class="search-form">
+            <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
+            <button type="submit">ค้นหา</button>
+        </form>
+    </div>
+</header>
+
+<!-- Main Content (Product List) -->
+<!-- <h1 class="page-title">สินค้า</h1> -->
+{% block content %}
+<div class="product-grid">
+    {% for product in products %}
+    <a href="{% url 'product_detail' product.id %}" class="product-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-price">{{ product.price }} บาท</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-links">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Contact</a>
+        </div>
+        <p>&copy; 2025 GreenMart. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

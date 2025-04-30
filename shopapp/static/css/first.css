@@ -1,0 +1,37 @@
+.first-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background: linear-gradient(to bottom right, #e6f2e6, #cdeac0);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.first-page-container h1 {
+    font-size: 2.5rem;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.first-page-container p {
+    font-size: 1.2rem;
+    color: #4b5d4c;
+    margin-bottom: 30px;
+}
+
+.enter-button {
+    padding: 12px 24px;
+    background-color: #6BBF59;
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.enter-button:hover {
+    background-color: #57a44c;
+    transform: translateY(-2px);
+}
