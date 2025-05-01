@@ -3,27 +3,85 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/product.css' %}">
+
 <div class="product-detail-container">
-    
+
+    <!-- ปุ่มกลับ -->
     <div class="top-bar">
-        <a href="{% url 'home' %}" class="back-button">← Back to Home</a>
+        <a href="{% url 'home' %}" class="back-button">← กลับหน้าหลัก</a>
     </div>
 
-    <div class="product-detail">
-        <!-- ภาพสินค้า -->
+    <!-- กล่องรายละเอียดสินค้า -->
+    <div class="product-detail-box">
+
+        <!-- ซ้าย: รูปสินค้า -->
         <div class="product-image">
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
         </div>
 
-        <!-- ข้อมูลสินค้า -->
+        <!-- ขวา: ข้อมูลสินค้า -->
         <div class="product-info">
-            <h1>{{ product.name }}</h1>
+            <h1 class="product-title">{{ product.name }}</h1>
             <p class="product-price">${{ product.price }}</p>
-            <div class="product-description">
-                <p>{{ product.description }}</p>
-            </div>
+
+            <!-- แสดงคาร์บอน -->
+            <p class="carbon-reduction">🌱 ลดคาร์บอนแล้ว {{ product.carbon_reduction }} กิโลกรัม</p>
+            
+            <form method="post" action="#">
+                {% csrf_token %}
+            
+                <!-- ตัวเลือกสินค้า -->
+                <div class="form-row">
+                    <label for="option">ตัวเลือก:</label>
+                    <select name="option" id="option" class="product-option">
+                        {% for option in product.options.all %}
+                            <option value="{{ option.id }}">{{ option.name }}</option>
+                        {% empty %}
+                            <option disabled>ไม่มีตัวเลือก</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                <!-- จำนวนสินค้า -->
+                <div class="form-row">
+                    <label for="quantity">จำนวน:</label>
+                    <div class="quantity-box">
+                        <button type="button" class="qty-btn" onclick="decreaseQty()">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1">
+                        <button type="button" class="qty-btn" onclick="increaseQty()">+</button>
+                    </div>
+                </div>
+            
+                <!-- ปุ่ม -->
+                <button type="submit" class="buy-button" disabled>🛒 เพิ่มลงตะกร้า (เร็ว ๆ นี้)</button>
+            </form>
+
         </div>
     </div>
+    <!-- คำอธิบาย -->
+    <div class="product-detail2-box">
+        <div class="product-description">
+            <h3>รายละเอียดสินค้า</h3>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+
+
+
+
 </div>
 
+<script>
+    function increaseQty() {
+        let qty = document.getElementById('quantity');
+        qty.value = parseInt(qty.value) + 1;
+    }
+
+    function decreaseQty() {
+        let qty = document.getElementById('quantity');
+        if (parseInt(qty.value) > 1) {
+            qty.value = parseInt(qty.value) - 1;
+        }
+    }
+</script>
 {% endblock %}
