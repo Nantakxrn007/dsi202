@@ -280,76 +280,113 @@ footer p {
     opacity: 0.9;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 1024px) {
-    .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+/* ---------- Responsive Design for Mobile ---------- */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 0 10px;
     }
 
-    header .search-form input[type="text"] {
-        width: 200px;
-    }
-}
-
-@media screen and (max-width: 768px) {
     header .container {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        gap: 15px;
     }
 
     header .nav {
-        margin: 15px 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
     }
 
     header .nav a {
-        margin: 0 10px;
+        margin: 0 10px 10px 0;
+        font-size: 1rem;
     }
 
     header .search-form {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     header .search-form input[type="text"] {
         width: 100%;
+        padding-right: 45px;
     }
 
-    .product-card .image-container {
-        height: 200px;
+    header .search-form button {
+        right: 10px;
     }
 
-    .product-name {
-        font-size: 1.1rem;
+    .product-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 30px auto;
     }
 
-    .product-price {
-        font-size: 1rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .container {
-        width: 90%;
-    }
-
-    header .logo a {
-        font-size: 1.5rem;
-    }
-
-    header .search-form input[type="text"] {
+    .product-card {
         width: 100%;
     }
 
-    .product-card .image-container {
+    .product-card img {
+        width: 100%;
         height: 180px;
     }
 
+    .product-info {
+        padding: 15px;
+    }
+
     .product-name {
         font-size: 1rem;
     }
 
     .product-price {
-        font-size: 0.9rem;
+        font-size: 1rem;
+    }
+
+    footer .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    footer .footer-links a {
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .product-card {
+        width: 100%; /* ให้กว้างเต็มกริดอัตโนมัติ */
+        max-width: 180px;
+        margin: 0 auto;
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 140px; /* ลดความสูงลง */
+    }
+
+    .product-card:hover img {
+        transform: scale(1.02); /* ลด zoom */
+    }
+
+    .product-info {
+        padding: 12px;
+    }
+
+    .product-name {
+        font-size: 1rem;
+    }
+
+    .product-price {
+        font-size: 1rem;
     }
 }

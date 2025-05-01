@@ -8,8 +8,10 @@
 2. ติดตั้ง dependencies
 3. รันไฟล์ `main.py`
 
-## ตัวอย่างโค้ด
+## พรุ้งนี้จะทำอะไร 
 
-```python
-import pandas as pd
-print(pd.__version__)
+1.หน้าตระกร้า
+2.ทำให้โทรศัพท์ มองเห็น
+
+
+
