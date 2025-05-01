@@ -1,0 +1,53 @@
+<!-- templates/base.html -->
+{% load static %}
+{% now "U" as timestamp %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Treeveq{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{ timestamp }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="logo">
+            <a href="{% url 'home' %}">Treeveq</a>
+        </div>
+        <nav class="nav">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="">About</a>
+            <a href="">Contact</a>
+        </nav>
+        <form method="get" action="{% url 'home' %}" class="search-form">
+            <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
+            <button type="submit"></button>
+        </form>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-links">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Contact</a>
+        </div>
+        <p>&copy; 2025 Treeveq. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

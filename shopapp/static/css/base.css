@@ -1,0 +1,278 @@
+/* Global Styles */
+:root {
+    --primary-color: #2c6b2f; /* Green theme */
+    --accent-color: #ffbf00; /* Yellow accent */
+    --background-color: #f9f9f9; /* Softer background */
+    --text-color: #333;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Modern, clean font */
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6; /* Improved readability */
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.container {
+    width: 85%; /* Slightly wider for better content spread */
+    max-width: 1400px; /* Prevent overly wide containers */
+    margin: 0 auto;
+    padding: 0 15px; /* Prevent content from touching edges */
+}
+
+/* Header */
+header {
+    background-color: var(--primary-color); /* Solid green */
+    color: var(--white);
+    padding: 25px 0;
+    box-shadow: var(--shadow);
+    position: sticky; /* Sticky header */
+
+    
+    top: 0;
+    z-index: 1000;
+}
+
+
+
+
+
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Better responsiveness */
+}
+
+header .logo a {
+    font-size: 2rem; /* Scalable font size */
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+
+header .logo a:hover {
+    color: var(--accent-color);
+}
+
+header .nav a {
+    margin-left: 25px;
+    color: var(--white);
+    font-size: 1.1rem;
+    text-decoration: none;
+    position: relative; /* For underline effect */
+    transition: var(--transition);
+}
+
+header .nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+header .nav a:hover::after {
+    width: 100%;
+}
+
+header .nav a:hover {
+    color: var(--accent-color);
+}
+
+header .search-form {
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: var(--transition);
+}
+
+header .search-form input[type="text"] {
+    padding: 12px 50px 12px 20px; /* Extra padding for button overlap */
+    border: none;
+    border-radius: 50px;
+    width: 260px; /* Slightly wider for balance */
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow);
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+}
+
+header .search-form input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    background-color: var(--white);
+    transform: scale(1.02); /* Subtle expansion on focus */
+}
+
+header .search-form input[type="text"]::placeholder {
+    color: #888;
+    opacity: 0.8;
+}
+
+header .search-form button {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #4CAF50, #45a049); /* Gradient for depth */
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+header .search-form button:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: scale(1.1); /* Slight zoom on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+header .search-form button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.4); /* Focus ring */
+    animation: pulse 1.5s infinite; /* Pulse effect on focus */
+}
+
+header .search-form button::before {
+    content: '\1F50D'; /* Unicode for magnifying glass */
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Pulse animation for button focus */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 191, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 191, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 191, 0, 0);
+    }
+}
+
+
+
+
+/* Footer */
+footer {
+    background-color: var(--primary-color); /* Solid green */
+    color: var(--white);
+    padding: 30px 0;
+    text-align: center;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+footer .footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+footer .footer-links a {
+    color: var(--white);
+    margin: 0 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    position: relative;
+    transition: var(--transition);
+}
+
+footer .footer-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+footer .footer-links a:hover::after {
+    width: 100%;
+}
+
+footer .footer-links a:hover {
+    color: var(--accent-color);
+}
+
+footer p {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ---------- Responsive Design for Mobile ---------- */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 0 10px;
+    }
+
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    header .nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    header .nav a {
+        margin: 0 10px 10px 0;
+        font-size: 1rem;
+    }
+
+    header .search-form {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    header .search-form input[type="text"] {
+        width: 100%;
+        padding-right: 45px;
+    }
+
+    header .search-form button {
+        right: 10px;
+    }
+
+
+    footer .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    footer .footer-links a {
+        margin: 5px 0;
+    }
+}
+
