@@ -1,4 +1,5 @@
 <!-- templates/home.html -->
+{% now "U" as timestamp %}
 {% load static %}
 
 
@@ -8,7 +9,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Product List</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}?v={{ timestamp }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -26,13 +28,12 @@
         </nav>
         <form method="get" action="{% url 'home' %}" class="search-form">
             <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
-            <button type="submit">ค้นหา</button>
+            <button type="submit"></button>
         </form>
     </div>
 </header>
 
-<!-- Main Content (Product List) -->
-<!-- <h1 class="page-title">สินค้า</h1> -->
+
 {% block content %}
 <div class="product-grid">
     {% for product in products %}
@@ -54,7 +55,7 @@
             <a href="#">Privacy</a>
             <a href="#">Contact</a>
         </div>
-        <p>&copy; 2025 GreenMart. All rights reserved.</p>
+        <p>&copy; 2025 Treeveq. All rights reserved.</p>
     </div>
 </footer>
 
