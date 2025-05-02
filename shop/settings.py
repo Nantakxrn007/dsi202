@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopapp',
+    'cart',
+
 ]
 
 MIDDLEWARE = [
@@ -119,6 +121,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'shopapp/static'),
+    os.path.join(BASE_DIR, 'cart/static'),
 ]
 
 # Default primary key field type

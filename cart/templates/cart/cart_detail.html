@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}product-detail-page{% endblock %}
+{% block header_class %}{% endblock %}  {# ไม่ใส่คลาส sticky-header #}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+<div class="cart-container">
+    <h1>🛒 ตะกร้าสินค้า</h1>
+
+    {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>ตัวเลือก</th>
+                    <th>จำนวน</th>
+                    <th>ราคาต่อหน่วย</th>
+                    <th>รวม</th>
+                    <th>ลดคาร์บอน</th>
+                    <th>ลบ</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.option_name|default:"-" }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.price|floatformat:2 }}</td>
+                    <td>${{ item.total_price|floatformat:2 }}</td>
+                    <td>{{ item.carbon_reduction|default:"0.00"|floatformat:2 }} kg</td>
+                    <td>
+                        <form method="post" action="{% url 'cart:cart_remove' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                            <input type="hidden" name="option_id" value="{{ item.option_id }}">
+                            <button type="submit" class="remove-btn">❌</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="totals">
+            <p><strong>รวมทั้งหมด:</strong> ${{ cart_total|floatformat:2 }}</p>
+            <p><strong>รวมลดคาร์บอน:</strong> {{ carbon_total|default:"0.00"|floatformat:2 }} kg</p>
+            <form method="post" action="{% url 'cart:cart_clear' %}">
+                {% csrf_token %}
+                <button type="submit" class="clear-all-btn">🗑️ ล้างตะกร้าทั้งหมด</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="empty-cart">ไม่มีสินค้าในตะกร้า</p>
+    {% endif %}
+</div>
+{% endblock %}

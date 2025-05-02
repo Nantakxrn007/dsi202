@@ -28,6 +28,8 @@
             <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
             <button type="submit"></button>
         </form>
+        <a href="{% url 'cart:cart_detail' %}">Go to Cart</a>
+
     </div>
 </header>
 

@@ -3,6 +3,7 @@ from .models import Product
 from django.db.models import Q  # สำหรับค้นหาแบบ flexible
 from django.views.generic import TemplateView 
 
+
 class HomePageView(ListView):
     model = Product                   # จะใช้ model นี้อัตโนมัติ
     template_name = 'home.html'       # ชื่อ template ที่จะเรนเดอร์
@@ -24,4 +25,3 @@ class ProductDetailView(DetailView):
 
 class FirstPageView(TemplateView):
     template_name = 'first.html'
-

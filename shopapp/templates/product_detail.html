@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
-
-
-
-
 {% block body_class %}product-detail-page{% endblock %}
 {% block header_class %}{% endblock %}  {# ไม่ใส่คลาส sticky-header #}
 {% block content %}
@@ -33,19 +28,23 @@
             <!-- แสดงคาร์บอน -->
             <p class="carbon-reduction">🌱 ลดคาร์บอนแล้ว {{ product.carbon_reduction }} กิโลกรัม</p>
             
-            <form method="post" action="#">
+            <form method="post" action="{% url 'cart:cart_add' %}">
                 {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
             
                 <!-- ตัวเลือกสินค้า -->
                 <div class="form-row">
                     <label for="option">ตัวเลือก:</label>
-                    <select name="option" id="option" class="product-option">
-                        {% for option in product.options.all %}
-                            <option value="{{ option.id }}">{{ option.name }}</option>
-                        {% empty %}
-                            <option disabled>ไม่มีตัวเลือก</option>
-                        {% endfor %}
-                    </select>
+                    {% if product.options.all %}
+                        <select name="option" id="option" class="product-option">
+                            {% for option in product.options.all %}
+                                <option value="{{ option.id }}">{{ option.name }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="hidden" name="option_id" value="">
+                        <p style="margin-top: 0.5rem;">ไม่มีตัวเลือก</p>
+                    {% endif %}
                 </div>
             
                 <!-- จำนวนสินค้า -->
@@ -59,7 +58,7 @@
                 </div>
             
                 <!-- ปุ่ม -->
-                <button type="submit" class="buy-button" >🛒 เพิ่มลงตะกร้า (เร็ว ๆ นี้)</button>
+                <button type="submit" class="buy-button">🛒 เพิ่มลงตะกร้า</button>
             </form>
             
         </div>
@@ -72,22 +71,19 @@
             <p>{{ product.description }}</p>
         </div>
     </div>
-
-
-
-
 </div>
 
 <script>
     function increaseQty() {
-        let qty = document.getElementById('quantity');
-        qty.value = parseInt(qty.value) + 1;
+        const qty = document.getElementById('quantity');
+        qty.value = parseInt(qty.value || "1") + 1;
     }
 
     function decreaseQty() {
-        let qty = document.getElementById('quantity');
-        if (parseInt(qty.value) > 1) {
-            qty.value = parseInt(qty.value) - 1;
+        const qty = document.getElementById('quantity');
+        const current = parseInt(qty.value || "1");
+        if (current > 1) {
+            qty.value = current - 1;
         }
     }
 </script>
