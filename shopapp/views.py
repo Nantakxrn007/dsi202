@@ -1,8 +1,7 @@
 from django.views.generic import ListView, DetailView
 from .models import Product
 from django.db.models import Q  # สำหรับค้นหาแบบ flexible
-from django.views.generic import TemplateView
-
+from django.views.generic import TemplateView 
 
 class HomePageView(ListView):
     model = Product                   # จะใช้ model นี้อัตโนมัติ
@@ -23,13 +22,6 @@ class ProductDetailView(DetailView):
     template_name = 'product_detail.html'
     context_object_name = 'product'
 
-
-
 class FirstPageView(TemplateView):
     template_name = 'first.html'
-
-
-    
-
-
 

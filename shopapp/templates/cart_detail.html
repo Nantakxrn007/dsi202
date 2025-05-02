@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}cart-page{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+<div class="cart-container">
+    <h1>ตระกร้าสินค้า</h1>
+
+    {% if cart_items %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>ตัวเลือก</th>
+                    <th>จำนวน</th>
+                    <th>ราคา</th>
+                    <th>รวม</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.option.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.product.price }}</td>
+                        <td>${{ item.subtotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="cart-total">
+            <h3>ยอดรวม: ${{ total_price }}</h3>
+        </div>
+        <a href="#" class="checkout-button">ดำเนินการชำระเงิน</a>
+    {% else %}
+        <p>ตระกร้าของคุณว่างเปล่า</p>
+        <a href="{% url 'home' %}" class="back-button">กลับไปเลือกสินค้า</a>
+    {% endif %}
+</div>
+{% endblock %}

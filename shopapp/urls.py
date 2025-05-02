@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomePageView, ProductDetailView , FirstPageView
+from .views import HomePageView, ProductDetailView , FirstPageView 
 
 urlpatterns = [
     path('', FirstPageView.as_view(), name='first'),  # หน้าหลัก เริ่มที่ first
