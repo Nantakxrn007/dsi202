@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+
+
+
 {% block body_class %}product-detail-page{% endblock %}
-{% block header_class %}{% endblock %}
+{% block header_class %}{% endblock %}  {# ไม่ใส่คลาส sticky-header #}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/product.css' %}">
 
 <div class="product-detail-container">
+
     <!-- ปุ่มกลับ -->
     <div class="top-bar">
         <a href="{% url 'home' %}" class="back-button">กลับหน้าหลัก</a>
@@ -14,6 +19,7 @@
 
     <!-- กล่องรายละเอียดสินค้า -->
     <div class="product-detail-box">
+
         <!-- ซ้าย: รูปสินค้า -->
         <div class="product-image">
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
@@ -23,13 +29,13 @@
         <div class="product-info">
             <h1 class="product-title">{{ product.name }}</h1>
             <p class="product-price">${{ product.price }}</p>
+
+            <!-- แสดงคาร์บอน -->
             <p class="carbon-reduction">🌱 ลดคาร์บอนแล้ว {{ product.carbon_reduction }} กิโลกรัม</p>
             
-            <form method="post" action="{% url 'add_to_cart' %}">
+            <form method="post" action="#">
                 {% csrf_token %}
-                <!-- ซ่อน product_id -->
-                <input type="hidden" name="product_id" value="{{ product.id }}">
-                
+            
                 <!-- ตัวเลือกสินค้า -->
                 <div class="form-row">
                     <label for="option">ตัวเลือก:</label>
@@ -41,7 +47,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                
+            
                 <!-- จำนวนสินค้า -->
                 <div class="form-row">
                     <label for="quantity">จำนวน:</label>
@@ -51,13 +57,14 @@
                         <button type="button" class="qty-btn" onclick="increaseQty()">+</button>
                     </div>
                 </div>
-                
+            
                 <!-- ปุ่ม -->
-                <button type="submit" class="buy-button">🛒 เพิ่มลงตะกร้า</button>
+                <button type="submit" class="buy-button" >🛒 เพิ่มลงตะกร้า (เร็ว ๆ นี้)</button>
             </form>
+            
         </div>
+        
     </div>
-
     <!-- คำอธิบาย -->
     <div class="product-detail2-box">
         <div class="product-description">
@@ -65,6 +72,10 @@
             <p>{{ product.description }}</p>
         </div>
     </div>
+
+
+
+
 </div>
 
 <script>
