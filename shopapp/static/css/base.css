@@ -32,14 +32,19 @@ header {
     color: var(--white);
     padding: 25px 0;
     box-shadow: var(--shadow);
-    position: sticky; /* Sticky header */
-
-    
     top: 0;
     z-index: 1000;
+    position: relative;
 }
 
-
+header.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 25px 0;
+    box-shadow: var(--shadow);
+}
 
 
 

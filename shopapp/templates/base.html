@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{ timestamp }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
 <!-- Header -->
-<header>
+<header class="{% block header_class %}sticky-header{% endblock %}">
     <div class="container">
         <div class="logo">
             <a href="{% url 'home' %}">Treeveq</a>
