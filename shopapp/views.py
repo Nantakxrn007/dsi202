@@ -18,7 +18,9 @@ class HomePageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['flash_sale_products'] = Product.objects.filter(is_on_sale=True)
+        # Use the related_name 'sale_informations' to filter
+        flash_sale_products = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
+        context['flash_sale_products'] = flash_sale_products
         return context
 
 class ProductDetailView(DetailView):

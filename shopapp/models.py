@@ -9,11 +9,7 @@ class Product(models.Model):
         max_digits=6, decimal_places=2, default=0.00,
         help_text="จำนวนคาร์บอนที่ลดได้ (กิโลกรัม)"
     )
-    is_on_sale = models.BooleanField(default=False)  # 👈 เพิ่ม field นี้
-    discount_percentage = models.IntegerField(null=True, blank=True)  # 👈 เพิ่ม field นี้
 
-
-    
     def __str__(self):
         return self.name
 
@@ -23,3 +19,11 @@ class ProductOption(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.name}"
+
+class SaleInformation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='sale_informations')
+    is_on_sale = models.BooleanField(default=False)
+    discount_percentage = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Sale Info for {self.product.name} (ID: {self.id})"

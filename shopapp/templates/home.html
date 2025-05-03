@@ -21,9 +21,15 @@
                 <a href="{% url 'product_detail' product.id %}">
                     <div class="image-container">
                         <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                        {% if product.discount_percentage %}
-                        <div class="discount-badge">ลด {{ product.discount_percentage }}%</div>
-                        {% endif %}
+                        {% for sale_info in product.sale_informations.all %}
+                            {% if sale_info.is_on_sale %}
+                                {% if sale_info.discount_percentage %}
+                                <div class="discount-badge">ลด {{ sale_info.discount_percentage }}%</div>
+                                {% endif %}
+                            {% endif %}
+                        {% empty %}
+                            {# No active sale info for this product #}
+                        {% endfor %}
                     </div>
                     <div class="info-container">
                         <div class="product-name">{{ product.name }}</div>
