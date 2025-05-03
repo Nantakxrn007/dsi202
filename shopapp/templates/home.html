@@ -1,12 +1,54 @@
-<!-- templates/home.html -->
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block body_class %}home-page{% endblock %}
 {% block header_class %}sticky-header{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/flash_sale_carousel.css' %}">
+
+<div class="flash-sale-wrapper">
+    <h2>🔥 Flash Sale 🔥</h2>
+    <div class="flash-sale-carousel-container">
+        <button class="carousel-control prev-button">
+            <
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="flash-sale-carousel">
+            {% for product in flash_sale_products %}
+            <div class="flash-sale-item">
+                <a href="{% url 'product_detail' product.id %}">
+                    <div class="image-container">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% if product.discount_percentage %}
+                        <div class="discount-badge">ลด {{ product.discount_percentage }}%</div>
+                        {% endif %}
+                    </div>
+                    <div class="info-container">
+                        <div class="product-name">{{ product.name }}</div>
+                        <div class="price-container">
+                            {% if product.original_price %}
+                            <span class="original-price">{{ product.original_price }} บาท</span>
+                            {% endif %}
+                            <span class="current-price">{{ product.price }} บาท</span>
+                        </div>
+                        {% if product.remaining_stock %}
+                        <div class="stock-remaining">เหลือ {{ product.remaining_stock }} ชิ้น</div>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p>ไม่มีสินค้า Flash Sale ในขณะนี้</p>
+            {% endfor %}
+        </div>
+        <button class="carousel-control next-button">
+            >
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
 
 <div class="product-grid">
     {% for product in products %}
@@ -19,4 +61,43 @@
     </a>
     {% endfor %}
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.flash-sale-carousel');
+    const prevButton = document.querySelector('.prev-button');
+    const nextButton = document.querySelector('.next-button');
+
+    if (prevButton && nextButton && carousel) {
+        prevButton.addEventListener('click', function() {
+            carousel.scrollLeft -= carousel.offsetWidth - 50; // ปรับค่าตามต้องการ
+        });
+
+        nextButton.addEventListener('click', function() {
+            carousel.scrollLeft += carousel.offsetWidth - 50; // ปรับค่าตามต้องการ
+        });
+
+        // Optional: ซ่อน/แสดงปุ่มเมื่อสุดขอบ (ปรับปรุง)
+        function updateButtonVisibility() {
+            if (carousel.scrollLeft === 0) {
+                prevButton.style.visibility = 'hidden';
+            } else {
+                prevButton.style.visibility = 'visible';
+            }
+
+            if (carousel.scrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
+                nextButton.style.visibility = 'hidden';
+            } else {
+                nextButton.style.visibility = 'visible';
+            }
+        }
+
+        carousel.addEventListener('scroll', updateButtonVisibility);
+        updateButtonVisibility(); // เรียกครั้งแรกเมื่อโหลดหน้า
+    }
+});
+
+</script>
 {% endblock %}
+

@@ -8,7 +8,7 @@ class ProductOptionInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'carbon_reduction']
+    list_display = ['name', 'price', 'carbon_reduction','is_on_sale']
     inlines = [ProductOptionInline]
 
 admin.site.register(ProductOption)
