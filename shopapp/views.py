@@ -9,18 +9,23 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+
+        # ดึงสินค้าที่เป็น Flash Sale ก่อน
+        flash_sale_products = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
+        flash_sale_ids = flash_sale_products.values_list('id', flat=True)
+
         if query:
             return Product.objects.filter(
                 Q(name__icontains=query) |
                 Q(description__icontains=query)
-            )
-        return Product.objects.all()
+            ).exclude(id__in=flash_sale_ids)
+
+        return Product.objects.exclude(id__in=flash_sale_ids)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Use the related_name 'sale_informations' to filter
-        flash_sale_products = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
-        context['flash_sale_products'] = flash_sale_products
+        # ส่ง flash_sale_products ไปยัง template
+        context['flash_sale_products'] = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
         return context
 
 class ProductDetailView(DetailView):

@@ -20,15 +20,12 @@
             <a href="{% url 'home' %}">Treeveq</a>
         </div>
         <nav class="nav">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="">About</a>
-            <a href="">Contact</a>
         </nav>
         <form method="get" action="{% url 'home' %}" class="search-form">
             <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
             <button type="submit"></button>
         </form>
-        <a href="{% url 'cart:cart_detail' %}">Go to Cart</a>
+        <a href="{% url 'cart:cart_detail' %}"><h1>🛒</h1></a>
 
     </div>
 </header>

@@ -28,9 +28,9 @@ body {
 
 /* Header */
 header {
-    background-color: var(--primary-color); /* Solid green */
+    background-color: var(--primary-color);
     color: var(--white);
-    padding: 25px 0;
+    padding: 10px 0; /* ลดจาก 25px เหลือ 15px */
     box-shadow: var(--shadow);
     top: 0;
     z-index: 1000;
@@ -42,7 +42,7 @@ header.sticky-header {
     top: 0;
     background-color: var(--primary-color);
     color: var(--white);
-    padding: 25px 0;
+    padding: 10px 0;
     box-shadow: var(--shadow);
 }
 
