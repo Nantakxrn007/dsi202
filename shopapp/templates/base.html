@@ -26,13 +26,13 @@
         .search-button:focus { animation: pulse 0.5s ease-in-out; }
     </style>
 </head>
-<body class="font-[Poppins] bg-gradient-to-b from-green-50 to-green-100 text-gray-800 leading-relaxed scroll-smooth {% block body_class %}{% endblock %}">
+<body class="font-[Poppins] bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 leading-relaxed scroll-smooth {% block body_class %}{% endblock %}">
 
 <!-- Header -->
 <header class="bg-gradient-to-r from-green-800 to-green-700 top-0 z-50 shadow-lg {% block header_class %}sticky text-white{% endblock %}">
     <div class="w-[90%] max-w-[1400px] mx-auto px-6 flex justify-between items-center flex-wrap py-4">
         <div class="text-3xl font-bold tracking-tight animate-on-load">
-            <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">Treeveq</a>
+            <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">🌱 Treeveq</a>
         </div>
         <div class="flex items-center space-x-4 mt-3 md:mt-0 flex-grow justify-end">
             <form method="get" action="{% url 'home' %}" class="relative flex items-center animate-on-load w-full max-w-[600px]">
