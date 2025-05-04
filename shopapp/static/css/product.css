@@ -163,15 +163,19 @@ input[type="number"] {
     padding: 12px;
     font-size: 16px;
     background-color: #ccc;
-    color: #444;
+    color: #000000;
     border: none;
     border-radius: 8px;
-    cursor: not-allowed;
+    /* cursor: not-allowed; */
+    transition: background-color 0.3s ease, color 0.3s ease; /* แอนิเมชัน */
+
 }
 
 
-
-
+.buy-button:hover {
+    background-color: #ebebeb; /* เปลี่ยนพื้นหลังเมื่อ hover */
+    color: rgb(0, 0, 0); /* เปลี่ยนสีตัวอักษร */
+}
 
 
 
