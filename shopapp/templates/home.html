@@ -6,55 +6,60 @@
 
     {% block content %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <link rel="stylesheet" href="{% static 'css/flash_sale_carousel.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/flash_sale_carousel.css' %}"> -->
 
-    <div class="flash-sale-wrapper">
-        <h2>🔥 Flash Sale 🔥</h2>
-        <div class="flash-sale-carousel-container">
-            <button class="carousel-control prev-button">
-                <h1><</h1>
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="flash-sale-carousel">
-                {% for product in flash_sale_products %}
-                <div class="flash-sale-item">
-                    <a href="{% url 'product_detail' product.id %}">
-                        <div class="image-container">
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                            {% for sale_info in product.sale_informations.all %}
-                                {% if sale_info.is_on_sale %}
-                                    {% if sale_info.discount_percentage %}
-                                    <div class="discount-badge">ลด {{ sale_info.discount_percentage }}%</div>
-                                    {% endif %}
-                                {% endif %}
-                            {% empty %}
-                                {# No active sale info for this product #}
-                            {% endfor %}
-                        </div>
-                        <div class="info-container">
-                            <div class="product-name">{{ product.name }}</div>
-                            <div class="price-container">
-                                {% if product.original_price %}
-                                <span class="original-price">{{ product.original_price }} บาท</span>
-                                {% endif %}
-                                <span class="current-price">{{ product.price }} บาท</span>
+<div class="p-5 bg-gray-100 mb-5">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl text-gray-800 font-bold mb-2">🔥 Flash Sale 🔥</h2>
+            <div id="countdown" class="text-red-600 text-xl font-mono animate-pulse">Loading...</div>
+          </div>
+    <div class="relative flex overflow-hidden px-10">
+
+        <!-- ปุ่มก่อนหน้า -->
+        <button class="prev-button absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10">
+            <i class="fas fa-chevron-left text-sm"><h1 class="text-2xl"><</h1></i>
+        </button>
+
+        <!-- สินค้า Flash Sale -->
+        <div class="flash-sale-carousel flex overflow-x-auto pb-4 space-x-4 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:hidden">
+            {% for product in flash_sale_products %}
+            <div class="bg-white rounded-lg shadow-md w-[220px] flex-shrink-0 snap-start transition-transform duration-300 hover:-translate-y-1">
+                <a href="{% url 'product_detail' product.id %}" class="block text-inherit no-underline">
+                    <div class="relative overflow-hidden rounded-t-lg">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[220px] object-cover">
+                        {% for sale_info in product.sale_informations.all %}
+                            {% if sale_info.is_on_sale and sale_info.discount_percentage %}
+                            <div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
+                                ลด {{ sale_info.discount_percentage }}%
                             </div>
-                            {% if product.remaining_stock %}
-                            <div class="stock-remaining">เหลือ {{ product.remaining_stock }} ชิ้น</div>
                             {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="p-4 text-center">
+                        <div class="text-base font-semibold truncate">{{ product.name }}</div>
+                        <div class="flex justify-center items-center gap-2 mb-2">
+                            {% if product.original_price %}
+                            <span class="line-through text-gray-500 text-sm">{{ product.original_price }} บาท</span>
+                            {% endif %}
+                            <span class="text-red-600 text-lg font-bold">{{ product.price }} บาท</span>
                         </div>
-                    </a>
-                </div>
-                {% empty %}
-                <p>ไม่มีสินค้า Flash Sale ในขณะนี้</p>
-                {% endfor %}
+                        {% if product.remaining_stock %}
+                        <div class="text-orange-500 text-sm">เหลือ {{ product.remaining_stock }} ชิ้น</div>
+                        {% endif %}
+                    </div>
+                </a>
             </div>
-            <button class="carousel-control next-button">
-                <h1>></h1>
-                <i class="fas fa-chevron-right"></i>
-            </button>
+            {% empty %}
+            <p>ไม่มีสินค้า Flash Sale ในขณะนี้</p>
+            {% endfor %}
         </div>
+
+        <!-- ปุ่มถัดไป -->
+        <button class="next-button absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10">
+            <i class="fas fa-chevron-right text-sm"><h1 class="text-2xl">></h1></i>
+        </button>
     </div>
+</div>
 
     <div class="product-grid">
         {% for product in products %}
@@ -68,42 +73,70 @@
         {% endfor %}
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const countdownEl = document.getElementById("countdown");
+      
+          function startCountdown(durationMs) {
+            const endTime = new Date(Date.now() + durationMs);
+      
+            function updateCountdown() {
+              const now = new Date();
+              let diff = endTime - now;
+      
+              if (diff <= 0) {
+                // นับถอยหลังใหม่เมื่อหมดเวลา
+                startCountdown(durationMs);
+                return;
+              }
+      
+              const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+              const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+              const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+      
+              countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+      
+            updateCountdown();
+            const interval = setInterval(updateCountdown, 1000);
+          }
+      
+          // เริ่มต้นนับถอยหลังจาก 23:59:59 (24 ชั่วโมง = 86400000 ms)
+          startCountdown(86400000);
+        });
+      </script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const carousel = document.querySelector('.flash-sale-carousel');
-        const prevButton = document.querySelector('.prev-button');
-        const nextButton = document.querySelector('.next-button');
-
-        if (prevButton && nextButton && carousel) {
-            prevButton.addEventListener('click', function() {
-                carousel.scrollLeft -= carousel.offsetWidth - 50; // ปรับค่าตามต้องการ
-            });
-
-            nextButton.addEventListener('click', function() {
-                carousel.scrollLeft += carousel.offsetWidth - 50; // ปรับค่าตามต้องการ
-            });
-
-            // Optional: ซ่อน/แสดงปุ่มเมื่อสุดขอบ (ปรับปรุง)
-            function updateButtonVisibility() {
-                if (carousel.scrollLeft === 0) {
-                    prevButton.style.visibility = 'hidden';
-                } else {
-                    prevButton.style.visibility = 'visible';
+        document.addEventListener('DOMContentLoaded', function () {
+            const carousel = document.querySelector('.flash-sale-carousel');
+            const prevButton = document.querySelector('.prev-button');
+            const nextButton = document.querySelector('.next-button');
+        
+            if (prevButton && nextButton && carousel) {
+                const scrollAmount = carousel.offsetWidth - 50;
+        
+                prevButton.addEventListener('click', function () {
+                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                });
+        
+                nextButton.addEventListener('click', function () {
+                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                });
+        
+                function updateButtonVisibility() {
+                    const scrollLeft = carousel.scrollLeft;
+                    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+        
+                    prevButton.style.visibility = scrollLeft <= 5 ? 'hidden' : 'visible';
+                    nextButton.style.visibility = scrollLeft >= maxScrollLeft - 5 ? 'hidden' : 'visible';
                 }
-
-                if (carousel.scrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
-                    nextButton.style.visibility = 'hidden';
-                } else {
-                    nextButton.style.visibility = 'visible';
-                }
+        
+                // เรียกเมื่อ scroll และตอนโหลดหน้า
+                carousel.addEventListener('scroll', updateButtonVisibility);
+                updateButtonVisibility();
             }
-
-            carousel.addEventListener('scroll', updateButtonVisibility);
-            updateButtonVisibility(); // เรียกครั้งแรกเมื่อโหลดหน้า
-        }
-    });
-
-    </script>
+        });
+        </script>
+        
     {% endblock %}
 
