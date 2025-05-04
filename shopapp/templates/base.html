@@ -1,51 +1,69 @@
-<!-- templates/base.html -->
 {% load static %}
 {% now "U" as timestamp %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Treeveq{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{ timestamp }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .animate-on-load {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .search-button:focus { animation: pulse 0.5s ease-in-out; }
+    </style>
 </head>
-<body class="{% block body_class %}{% endblock %}">
+<body class="font-[Poppins] bg-gradient-to-b from-green-50 to-green-100 text-gray-800 leading-relaxed scroll-smooth {% block body_class %}{% endblock %}">
 
 <!-- Header -->
-<header class="{% block header_class %}sticky-header{% endblock %}">
-    <div class="container">
-        <div class="logo">
-            <a href="{% url 'home' %}">Treeveq</a>
+<header class="bg-gradient-to-r from-green-800 to-green-700 top-0 z-50 shadow-lg {% block header_class %}sticky text-white{% endblock %}">
+    <div class="w-[90%] max-w-[1400px] mx-auto px-6 flex justify-between items-center flex-wrap py-4">
+        <div class="text-3xl font-bold tracking-tight animate-on-load">
+            <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">Treeveq</a>
         </div>
-        <nav class="nav">
-        </nav>
-        <form method="get" action="{% url 'home' %}" class="search-form">
-            <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}">
-            <button type="submit"></button>
-        </form>
-        <a href="{% url 'cart:cart_detail' %}"><h1>🛒</h1></a>
-
+        <div class="flex items-center space-x-4 mt-3 md:mt-0 flex-grow justify-end">
+            <form method="get" action="{% url 'home' %}" class="relative flex items-center animate-on-load w-full max-w-[600px]">
+                <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}"
+                    class="px-6 py-3 pr-12 w-full rounded-full bg-white bg-opacity-90 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition hover:scale-[1.02] placeholder:text-gray-500 placeholder:opacity-80 text-sm">
+                <button type="submit"
+                    class="absolute right-1 w-10 h-10 rounded-full bg-gradient-to-br from-green-600 to-green-500 text-white flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-opacity-40 search-button"
+                    title="ค้นหา">
+                    🔍
+                </button>
+            </form>
+            <a href="{% url 'cart:cart_detail' %}" class="text-2xl hover:text-yellow-300 transition hover-scale animate-on-load">🛒</a>
+        </div>
     </div>
 </header>
 
 <!-- Main Content -->
-<main>
+<main class="min-h-screen animate-on-load">
     {% block content %}
     {% endblock %}
 </main>
 
 <!-- Footer -->
-<footer>
-    <div class="footer-container">
-        <div class="footer-links">
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">Contact</a>
+<footer class="bg-gradient-to-r from-green-800 to-green-700 text-white text-center py-10 shadow-inner">
+    <div class="flex flex-col items-center gap-6 animate-on-load">
+        <div class="flex gap-10">
+            <a href="#" class="relative hover:text-yellow-300 transition after:content-[''] after:block after:h-0.5 after:w-0 hover:after:w-full after:bg-yellow-300 after:transition-all after:duration-300">Terms</a>
+            <a href="#" class="relative hover:text-yellow-300 transition after:content-[''] after:block after:h-0.5 after:w-0 hover:after:w-full after:bg-yellow-300 after:transition-all after:duration-300">Privacy</a>
+            <a href="#" class="relative hover:text-yellow-300 transition after:content-[''] after:block after:h-0.5 after:w-0 hover:after:w-full after:bg-yellow-300 after:transition-all after:duration-300">Contact</a>
         </div>
-        <p>&copy; 2025 Treeveq. All rights reserved.</p>
+        <p class="text-sm opacity-90">© 2025 Treeveq. All rights reserved.</p>
     </div>
 </footer>
 
