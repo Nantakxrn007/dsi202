@@ -8,58 +8,64 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/flash_sale_carousel.css' %}"> -->
 
-<div class="p-5 bg-gray-100 mb-5">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl text-gray-800 font-bold mb-2">🔥 Flash Sale 🔥</h2>
-            <div id="countdown" class="text-red-600 text-xl font-mono animate-pulse">Loading...</div>
+    <div class="p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-7xl mx-auto">
+          
+          <!-- หัวข้อและ Countdown -->
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">🔥 Flash Sale 🔥</h2>
+            <div id="countdown" class="text-red-600 text-2xl font-mono font-bold animate-pulse">Loading...</div>
           </div>
-    <div class="relative flex overflow-hidden px-10">
-
-        <!-- ปุ่มก่อนหน้า -->
-        <button class="prev-button absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10">
-            <i class="fas fa-chevron-left text-sm"><h1 class="text-2xl"><</h1></i>
-        </button>
-
-        <!-- สินค้า Flash Sale -->
-        <div class="flash-sale-carousel flex overflow-x-auto pb-4 space-x-4 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:hidden">
-            {% for product in flash_sale_products %}
-            <div class="bg-white rounded-lg shadow-md w-[220px] flex-shrink-0 snap-start transition-transform duration-300 hover:-translate-y-1">
-                <a href="{% url 'product_detail' product.id %}" class="block text-inherit no-underline">
-                    <div class="relative overflow-hidden rounded-t-lg">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[220px] object-cover">
-                        {% for sale_info in product.sale_informations.all %}
-                            {% if sale_info.is_on_sale and sale_info.discount_percentage %}
-                            <div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-                                ลด {{ sale_info.discount_percentage }}%
-                            </div>
-                            {% endif %}
-                        {% endfor %}
+      
+          <!-- Carousel -->
+          <div class="relative flex overflow-hidden px-4">
+            <!-- ปุ่มก่อนหน้า -->
+            <button class="prev-button absolute top-1/2 -translate-y-1/2 left-2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10 transition duration-300">
+              <i class="fas fa-chevron-left text-lg"><h1 class="text-3xl"><</h1></i>
+            </button>
+      
+            <!-- สินค้า -->
+            <div class="flash-sale-carousel flex overflow-x-auto space-x-6 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-4">
+              {% for product in flash_sale_products %}
+              <div class="bg-white rounded-xl shadow-md w-[240px] flex-shrink-0 snap-start transition duration-300 hover:shadow-xl hover:-translate-y-1">
+                <a href="{% url 'product_detail' product.id %}" class="block">
+                  <div class="relative rounded-t-xl overflow-hidden">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[220px] object-cover transition-transform duration-300 hover:scale-105">
+                    {% for sale_info in product.sale_informations.all %}
+                      {% if sale_info.is_on_sale and sale_info.discount_percentage %}
+                      <div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
+                        ลด {{ sale_info.discount_percentage }}%
+                      </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div class="p-4 text-center">
+                    <div class="font-semibold text-base text-gray-800 truncate">{{ product.name }}</div>
+                    <div class="flex justify-center items-center gap-2 my-2">
+                      {% if product.original_price %}
+                      <span class="line-through text-gray-400 text-sm">{{ product.original_price }} บาท</span>
+                      {% endif %}
+                      <span class="text-red-600 font-bold text-lg">{{ product.price }} บาท</span>
                     </div>
-                    <div class="p-4 text-center">
-                        <div class="text-base font-semibold truncate">{{ product.name }}</div>
-                        <div class="flex justify-center items-center gap-2 mb-2">
-                            {% if product.original_price %}
-                            <span class="line-through text-gray-500 text-sm">{{ product.original_price }} บาท</span>
-                            {% endif %}
-                            <span class="text-red-600 text-lg font-bold">{{ product.price }} บาท</span>
-                        </div>
-                        {% if product.remaining_stock %}
-                        <div class="text-orange-500 text-sm">เหลือ {{ product.remaining_stock }} ชิ้น</div>
-                        {% endif %}
-                    </div>
+                    {% if product.remaining_stock %}
+                    <div class="text-sm text-orange-600">เหลือ {{ product.remaining_stock }} ชิ้น</div>
+                    {% endif %}
+                  </div>
                 </a>
+              </div>
+              {% empty %}
+              <p class="text-gray-500">ไม่มีสินค้า Flash Sale ในขณะนี้</p>
+              {% endfor %}
             </div>
-            {% empty %}
-            <p>ไม่มีสินค้า Flash Sale ในขณะนี้</p>
-            {% endfor %}
+      
+            <!-- ปุ่มถัดไป -->
+            <button class="next-button absolute top-1/2 -translate-y-1/2 right-2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10 transition duration-300">
+              <i class="fas fa-chevron-right text-lg"><h1 class="text-3xl">></h1></i>
+            </button>
+          </div>
         </div>
-
-        <!-- ปุ่มถัดไป -->
-        <button class="next-button absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10">
-            <i class="fas fa-chevron-right text-sm"><h1 class="text-2xl">></h1></i>
-        </button>
-    </div>
-</div>
+      </div>
+      
 
     <div class="product-grid">
         {% for product in products %}
