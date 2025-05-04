@@ -1,148 +1,219 @@
-    {% extends "base.html" %}
-    {% load static %}
+{% extends "base.html" %}
+{% load static %}
 
-    {% block body_class %}home-page{% endblock %}
-    {% block header_class %}sticky-header{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block header_class %}sticky-header{% endblock %}
 
-    {% block content %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'css/flash_sale_carousel.css' %}"> -->
-
-    <div class="p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100">
-        <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-7xl mx-auto">
-          
-          <!-- หัวข้อและ Countdown -->
-          <div class="text-center mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">🔥 Flash Sale 🔥</h2>
-            <div id="countdown" class="text-red-600 text-2xl font-mono font-bold animate-pulse">Loading...</div>
-          </div>
-      
-          <!-- Carousel -->
-          <div class="relative flex overflow-hidden px-4">
-            <!-- ปุ่มก่อนหน้า -->
-            <button class="prev-button absolute top-1/2 -translate-y-1/2 left-2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10 transition duration-300">
-              <i class="fas fa-chevron-left text-lg"><h1 class="text-3xl"><</h1></i>
-            </button>
-      
-            <!-- สินค้า -->
-            <div class="flash-sale-carousel flex overflow-x-auto space-x-6 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-4">
-              {% for product in flash_sale_products %}
-              <div class="bg-white rounded-xl shadow-md w-[240px] flex-shrink-0 snap-start transition duration-300 hover:shadow-xl hover:-translate-y-1">
-                <a href="{% url 'product_detail' product.id %}" class="block">
-                  <div class="relative rounded-t-xl overflow-hidden">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[220px] object-cover transition-transform duration-300 hover:scale-105">
-                    {% for sale_info in product.sale_informations.all %}
-                      {% if sale_info.is_on_sale and sale_info.discount_percentage %}
-                      <div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
-                        ลด {{ sale_info.discount_percentage }}%
-                      </div>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  <div class="p-4 text-center">
-                    <div class="font-semibold text-base text-gray-800 truncate">{{ product.name }}</div>
-                    <div class="flex justify-center items-center gap-2 my-2">
-                      {% if product.original_price %}
-                      <span class="line-through text-gray-400 text-sm">{{ product.original_price }} บาท</span>
-                      {% endif %}
-                      <span class="text-red-600 font-bold text-lg">{{ product.price }} บาท</span>
-                    </div>
-                    {% if product.remaining_stock %}
-                    <div class="text-sm text-orange-600">เหลือ {{ product.remaining_stock }} ชิ้น</div>
-                    {% endif %}
-                  </div>
-                </a>
-              </div>
-              {% empty %}
-              <p class="text-gray-500">ไม่มีสินค้า Flash Sale ในขณะนี้</p>
-              {% endfor %}
-            </div>
-      
-            <!-- ปุ่มถัดไป -->
-            <button class="next-button absolute top-1/2 -translate-y-1/2 right-2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 z-10 transition duration-300">
-              <i class="fas fa-chevron-right text-lg"><h1 class="text-3xl">></h1></i>
-            </button>
-          </div>
+{% block content %}
+{% block flash_sale %}
+<!-- Hero Section: Flash Sale with Gradient Background and Countdown Timer -->
+<div class="relative py-12 bg-gradient-to-br from-indigo-50 via-white to-purple-50 overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJkb3RzIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjEiIGZpbGw9InJnYmEoMTQ5LCAxNTMsIDIyNiwgMC4yKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNkb3RzKSIvPjwvc3ZnPg==')] opacity-50"></div>
+    
+    <div class="relative bg-white shadow-2xl rounded-3xl p-10 max-w-7xl mx-auto transform transition-all duration-500 hover:shadow-3xl">
+        <!-- Flash Sale Header -->
+        <div class="text-center mb-10">
+            <h2 class="text-4xl font-extrabold text-indigo-700 tracking-tight mb-3 animate-pulse">🔥 ดีลสุดพิเศษ! Flash Sale 🔥</h2>
+            <p class="text-gray-600 text-xl max-w-2xl mx-auto">สินค้าลดราคาจำนวนจำกัด! ช้อปเลยก่อนหมดเวลา!</p>
+            <div id="countdown" class="text-red-600 text-3xl font-mono font-bold mt-4 animate-pulse">Loading...</div>
         </div>
-      </div>
-      
 
-    <div class="product-grid">
-        {% for product in products %}
-        <a href="{% url 'product_detail' product.id %}" class="product-card">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            <div class="product-info">
-                <div class="product-name">{{ product.name }}</div>
-                <div class="product-price">{{ product.price }} บาท</div>
+        <!-- Flash Sale Carousel: Displays products in a horizontal scrollable container -->
+        <div class="relative flex overflow-hidden px-6 group">
+            <!-- Previous Button: Navigates to previous carousel items -->
+            <button class="prev-button absolute top-1/2 -translate-y-1/2 left-4 w-12 h-12 rounded-full bg-gray-600/80 text-white flex items-center justify-center hover:bg-gray-700 z-10 transition-all duration-300 hover:scale-110 shadow-lg opacity-0 invisible">
+                <span class="text-3xl transform transition-transform duration-300 group-hover:-rotate-0">❮</span>
+            </button>
+
+            <!-- Carousel Container: Smooth scrolling with snap behavior -->
+            <div class="flash-sale-carousel flex overflow-x-auto space-x-6 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:hidden pb-6">
+                {% for product in flash_sale_products %}
+                <div class="bg-white rounded-2xl shadow-lg w-[260px] flex-shrink-0 snap-start transition-all duration-500 hover:shadow-xl hover:-translate-y-2 group">
+                    <a href="{% url 'product_detail' product.id %}" class="block">
+                        <!-- Product Image with Discount Badge -->
+                        <div class="relative rounded-t-2xl overflow-hidden">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-110">
+                            {% for sale_info in product.sale_informations.all %}
+                                {% if sale_info.is_on_sale and sale_info.discount_percentage %}
+                                <div class="absolute top-3 left-3 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md animate-bounce-in">
+                                    ลด {{ sale_info.discount_percentage }}%
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!-- Product Details -->
+                        <div class="p-5 text-center">
+                            <div class="font-semibold text-lg text-gray-800 truncate group-hover:text-indigo-600 transition-colors duration-300">{{ product.name }}</div>
+                            <div class="flex justify-center items-center gap-3 my-3">
+                                {% if product.original_price %}
+                                <span class="line-through text-gray-400 text-sm">{{ product.original_price }} บาท</span>
+                                {% endif %}
+                                <span class="text-red-600 font-bold text-xl">{{ product.price }} บาท</span>
+                            </div>
+                            <div class="text-green-600 font-semibold text-sm mt-2 animate-slide-up">
+                                ลดคาร์บอน {{ product.carbon_reduction }} กิโลกรัม
+                            </div>
+                            {% if product.remaining_stock %}
+                            <div class="text-orange-600 font-medium text-sm mt-2 animate-slide-up">เหลือ {{ product.remaining_stock }} ชิ้น</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-gray-500 text-center w-full py-10">ไม่มีสินค้า Flash Sale ในขณะนี้</p>
+                {% endfor %}
             </div>
-        </a>
-        {% endfor %}
-    </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const countdownEl = document.getElementById("countdown");
-      
-          function startCountdown(durationMs) {
+            <!-- Next Button: Navigates to next carousel items -->
+            <button class="next-button absolute top-1/2 -translate-y-1/2 right-4 w-12 h-12 rounded-full bg-gray-600/80 text-white flex items-center justify-center hover:bg-gray-700 z-10 transition-all duration-300 hover:scale-110 shadow-lg opacity-0 invisible">
+                <span class="text-3xl transform transition-transform duration-300 group-hover:rotate-0">❯</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Flash Sale: Defines animation keyframes and carousel button hover -->
+<style>
+    @keyframes bounce-in {
+        0% { opacity: 0; transform: scale(0.8); }
+        60% { opacity: 0.7; transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slide-up {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-bounce-in {
+        animation: bounce-in 0.6s ease-out;
+    }
+    .animate-slide-up {
+        animation: slide-up 0.4s ease-out;
+    }
+    /* Ensure buttons are hidden by default */
+    .prev-button, .next-button {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    }
+    /* Show buttons when hovering over the carousel container */
+    .group:hover .prev-button,
+    .group:hover .next-button {
+        opacity: 1;
+        visibility: visible;
+    }
+</style>
+
+<!-- JavaScript for Countdown Timer: Displays remaining time for flash sale -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const countdownEl = document.getElementById("countdown");
+
+        function startCountdown(durationMs) {
             const endTime = new Date(Date.now() + durationMs);
-      
+
             function updateCountdown() {
-              const now = new Date();
-              let diff = endTime - now;
-      
-              if (diff <= 0) {
-                // นับถอยหลังใหม่เมื่อหมดเวลา
-                startCountdown(durationMs);
-                return;
-              }
-      
-              const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-              const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-              const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-      
-              countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
+                const now = new Date();
+                let diff = endTime - now;
+
+                if (diff <= 0) {
+                    startCountdown(durationMs);
+                    return;
+                }
+
+                const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+                const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+
+                countdownEl.textContent = `${hours}:${minutes}:${seconds}`;
             }
-      
+
             updateCountdown();
             const interval = setInterval(updateCountdown, 1000);
-          }
-      
-          // เริ่มต้นนับถอยหลังจาก 23:59:59 (24 ชั่วโมง = 86400000 ms)
-          startCountdown(86400000);
-        });
-      </script>
+        }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const carousel = document.querySelector('.flash-sale-carousel');
-            const prevButton = document.querySelector('.prev-button');
-            const nextButton = document.querySelector('.next-button');
-        
-            if (prevButton && nextButton && carousel) {
-                const scrollAmount = carousel.offsetWidth - 50;
-        
-                prevButton.addEventListener('click', function () {
-                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                });
-        
-                nextButton.addEventListener('click', function () {
-                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                });
-        
-                function updateButtonVisibility() {
-                    const scrollLeft = carousel.scrollLeft;
-                    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
-        
-                    prevButton.style.visibility = scrollLeft <= 5 ? 'hidden' : 'visible';
-                    nextButton.style.visibility = scrollLeft >= maxScrollLeft - 5 ? 'hidden' : 'visible';
-                }
-        
-                // เรียกเมื่อ scroll และตอนโหลดหน้า
-                carousel.addEventListener('scroll', updateButtonVisibility);
-                updateButtonVisibility();
+        // Start countdown from 23:59:59 (86400000 ms = 24 hours)
+        startCountdown(86400000);
+    });
+</script>
+
+<!-- JavaScript for Carousel: Handles navigation and button visibility -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.querySelector('.flash-sale-carousel');
+        const prevButton = document.querySelector('.prev-button');
+        const nextButton = document.querySelector('.next-button');
+
+        if (prevButton && nextButton && carousel) {
+            const scrollAmount = carousel.offsetWidth * 0.9;
+
+            prevButton.addEventListener('click', function () {
+                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            nextButton.addEventListener('click', function () {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            function updateButtonVisibility() {
+                const scrollLeft = carousel.scrollLeft;
+                const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+
+                prevButton.style.visibility = scrollLeft <= 5 ? 'hidden' : 'visible';
+                nextButton.style.visibility = scrollLeft >= maxScrollLeft - 5 ? 'hidden' : 'visible';
             }
-        });
-        </script>
-        
-    {% endblock %}
 
+            carousel.addEventListener('scroll', updateButtonVisibility);
+            updateButtonVisibility();
+        }
+    });
+</script>
+{% endblock flash_sale %}
+
+{% block recommended_products %}
+<!-- Recommended Products Section: Grid layout for curated products -->
+<div class="py-12 bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div class="bg-white shadow-2xl rounded-3xl p-8 max-w-7xl mx-auto transform transition-all duration-500 hover:shadow-3xl">
+        <!-- Section Header -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 animate-bounce-in">สินค้าแนะนำ</h2>
+
+        <!-- Product Grid: Responsive 2-5 column layout with adjusted spacing -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-items-center">
+            {% for product in products %}
+            <a href="{% url 'product_detail' product.id %}" class="bg-white rounded-2xl shadow-lg overflow-hidden w-full hover:shadow-xl transform transition-all duration-500 hover:-translate-y-2 group">
+                <!-- Product Image -->
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-[240px] object-cover object-center transition-transform duration-500 group-hover:scale-110">
+                <!-- Product Details -->
+                <div class="p-5 text-center">
+                    <div class="font-semibold text-lg text-gray-800 truncate group-hover:text-indigo-600 transition-colors duration-300">{{ product.name }}</div>
+                    <div class="text-red-600 font-bold text-xl mt-2">{{ product.price }} บาท</div>
+                    <div class="text-green-600 font-semibold text-sm mt-2 animate-slide-up">
+                        ลดคาร์บอน {{ product.carbon_reduction }} กิโลกรัม
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Recommended Products: Defines animation keyframes -->
+<style>
+    @keyframes bounce-in {
+        0% { opacity: 0; transform: scale(0.8); }
+        60% { opacity: 0.7; transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slide-up {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-bounce-in {
+        animation: bounce-in 0.6s ease-out;
+    }
+    .animate-slide-up {
+        animation: slide-up 0.4s ease-out;
+    }
+</style>
+{% endblock recommended_products %}
+{% endblock content %}
