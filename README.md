@@ -20,5 +20,6 @@ Story logo :
 ## พรุ้งนี้จะทำอะไร 
 1.ทุกหน้า tailwind
 2.Nav bar
+3.ยังงง
 
 
