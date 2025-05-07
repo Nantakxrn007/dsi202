@@ -43,7 +43,7 @@
                 </p>
             </div>
 
-            <form method="post" action="{% url 'cart:cart_add' %}" class="flex flex-col gap-5 mt-4">
+            <form method="post" action="{% url 'cart:cart_add' %}" class="flex flex-col gap-5 mt-4" id="add-to-cart-form">
                 {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
 
@@ -61,7 +61,7 @@
                         <p class="mt-2 text-sm text-gray-600">ไม่มีตัวเลือก</p>
                     {% endif %}
                 </div>
-
+                
                 <!-- จำนวนสินค้า -->
                 <div class="flex flex-col md:flex-row items-center gap-4">
                     <label for="quantity" class="font-medium text-base w-24 text-gray-700">จำนวน:</label>
@@ -83,6 +83,10 @@
                     </span>
                 </button>
             </form>
+            <!-- ข้อความแจ้งเตือน -->
+            <div id="cart-notification" style="display:none; background-color: green; color: white; padding: 10px;">
+                สินค้าได้ถูกเพิ่มลงในตะกร้าแล้ว!
+            </div>
         </div>
     </div>
 
@@ -159,30 +163,5 @@
     }
 </style>
 
-<script>
-    function increaseQty() {
-        const qty = document.getElementById('quantity');
-        qty.value = parseInt(qty.value || "1") + 1;
-    }
 
-    function decreaseQty() {
-        const qty = document.getElementById('quantity');
-        const current = parseInt(qty.value || "1");
-        if (current > 1) {
-            qty.value = current - 1;
-        }
-    }
-
-    // Animation on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // เพิ่ม pulse effect ให้กับปุ่มตะกร้า
-        setTimeout(function() {
-            const addToCartBtn = document.querySelector('button[type="submit"]');
-            addToCartBtn.classList.add('animate-pulse');
-            setTimeout(function() {
-                addToCartBtn.classList.remove('animate-pulse');
-            }, 1500);
-        }, 2000);
-    });
-</script>
 {% endblock %}
