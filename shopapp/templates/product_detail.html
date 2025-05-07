@@ -1,74 +1,77 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body_class %}product-detail-page{% endblock %}
-{% block header_class %}{% endblock %}  {# ไม่ใส่คลาส sticky-header #}
+{% block header_class %}{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/product.css' %}">
 
-<div class="product-detail-container">
-
+<div class="max-w-screen-lg mx-auto p-4">
+    
     <!-- ปุ่มกลับ -->
-    <div class="top-bar">
-        <a href="{% url 'home' %}" class="back-button">กลับหน้าหลัก</a>
+    <div class="flex justify-start items-center p-4 bg-white shadow-lg rounded-lg mb-5 border-l-4 border-green-500">
+        <a href="{% url 'home' %}" class="flex items-center text-green-600 text-lg font-medium px-6 py-2.5 rounded-lg bg-green-50 hover:bg-green-500 hover:text-white transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            กลับหน้าหลัก
+        </a>
     </div>
 
     <!-- กล่องรายละเอียดสินค้า -->
-    <div class="product-detail-box">
-
+    <div class="bg-white shadow-md rounded-xl p-8 flex flex-col md:flex-row gap-10">
+        
         <!-- ซ้าย: รูปสินค้า -->
-        <div class="product-image">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <div class="md:w-[500px] w-full">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-auto object-cover rounded-lg">
         </div>
 
         <!-- ขวา: ข้อมูลสินค้า -->
-        <div class="product-info">
-            <h1 class="product-title">{{ product.name }}</h1>
-            <p class="product-price">${{ product.price }}</p>
+        <div class="flex-1 flex flex-col gap-3">
+            <h1 class="text-3xl font-bold leading-tight">{{ product.name }}</h1>
+            <p class="text-2xl text-red-600 font-semibold">${{ product.price }}</p>
 
             <!-- แสดงคาร์บอน -->
-            <p class="carbon-reduction">🌱 ลดคาร์บอนแล้ว {{ product.carbon_reduction }} กิโลกรัม</p>
-            
-            <form method="post" action="{% url 'cart:cart_add' %}">
+            <p class="text-green-700 bg-green-100 px-3 py-2 rounded text-base">🌱 ลดคาร์บอนแล้ว {{ product.carbon_reduction }} กิโลกรัม</p>
+
+            <form method="post" action="{% url 'cart:cart_add' %}" class="flex flex-col gap-4 mt-4">
                 {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
-            
+
                 <!-- ตัวเลือกสินค้า -->
-                <div class="form-row">
-                    <label for="option">ตัวเลือก:</label>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <label for="option" class="font-medium text-base w-24">ตัวเลือก:</label>
                     {% if product.options.all %}
-                        <select name="option" id="option" class="product-option">
+                        <select name="option" id="option" class="w-full max-w-xs mt-2 md:mt-0 border border-gray-300 rounded-md p-2 text-base">
                             {% for option in product.options.all %}
                                 <option value="{{ option.id }}">{{ option.name }}</option>
                             {% endfor %}
                         </select>
                     {% else %}
                         <input type="hidden" name="option_id" value="">
-                        <p style="margin-top: 0.5rem;">ไม่มีตัวเลือก</p>
+                        <p class="mt-2 text-sm text-gray-600">ไม่มีตัวเลือก</p>
                     {% endif %}
                 </div>
-            
+
                 <!-- จำนวนสินค้า -->
-                <div class="form-row">
-                    <label for="quantity">จำนวน:</label>
-                    <div class="quantity-box">
-                        <button type="button" class="qty-btn" onclick="decreaseQty()">-</button>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1">
-                        <button type="button" class="qty-btn" onclick="increaseQty()">+</button>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <label for="quantity" class="font-medium text-base w-24">จำนวน:</label>
+                    <div class="flex items-center gap-2 max-w-[200px] w-full">
+                        <button type="button" class="px-3 py-1 text-lg font-bold bg-gray-200 rounded hover:bg-gray-400 transition" onclick="decreaseQty()">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="w-16 text-center border border-gray-300 rounded p-2 text-base">
+                        <button type="button" class="px-3 py-1 text-lg font-bold bg-gray-200 rounded hover:bg-gray-400 transition" onclick="increaseQty()">+</button>
                     </div>
                 </div>
-            
+
                 <!-- ปุ่ม -->
-                <button type="submit" class="buy-button">🛒 เพิ่มลงตะกร้า</button>
+                <button type="submit" class="w-full bg-gray-300 text-black py-3 text-base rounded-lg hover:bg-gray-200 transition">🛒 เพิ่มลงตะกร้า</button>
             </form>
-            
         </div>
-        
     </div>
+
     <!-- คำอธิบาย -->
-    <div class="product-detail2-box">
-        <div class="product-description">
-            <h3>รายละเอียดสินค้า</h3>
-            <p>{{ product.description }}</p>
+    <div class="bg-white shadow-md rounded-xl p-8 mt-12">
+        <div>
+            <h3 class="text-xl font-semibold mb-3">รายละเอียดสินค้า</h3>
+            <p class="text-base leading-relaxed text-gray-700">{{ product.description }}</p>
         </div>
     </div>
 </div>
