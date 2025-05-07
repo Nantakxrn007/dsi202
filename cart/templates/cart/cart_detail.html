@@ -1,59 +1,63 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body_class %}product-detail-page{% endblock %}
-{% block header_class %}{% endblock %}  {# ไม่ใส่คลาส sticky-header #}
+{% block header_class %}{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/cart.css' %}">
 
-<div class="cart-container">
-    <h1>🛒 ตะกร้าสินค้า</h1>
+<div class="max-w-5xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">🛒 ตะกร้าสินค้า</h1>
 
     {% if cart_items %}
-        <table>
-            <thead>
-                <tr>
-                    <th>สินค้า</th>
-                    <th>ตัวเลือก</th>
-                    <th>จำนวน</th>
-                    <th>ราคาต่อหน่วย</th>
-                    <th>รวม</th>
-                    <th>ลดคาร์บอน</th>
-                    <th>ลบ</th>
+        <div class="overflow-x-auto">
+            <table class="w-full text-center border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 font-semibold">
+                        <th class="p-4">สินค้า</th>
+                        <th class="p-4">ตัวเลือก</th>
+                        <th class="p-4">จำนวน</th>
+                        <th class="p-4">ราคาต่อหน่วย</th>
+                        <th class="p-4">รวม</th>
+                        <th class="p-4">ลดคาร์บอน</th>
+                        <th class="p-4">ลบ</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    {% for item in cart_items %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="p-4">{{ item.product_name }}</td>
+                        <td class="p-4">{{ item.option_name|default:"-" }}</td>
+                        <td class="p-4">{{ item.quantity }}</td>
+                        <td class="p-4">${{ item.price|floatformat:2 }}</td>
+                        <td class="p-4">${{ item.total_price|floatformat:2 }}</td>
+                        <td class="p-4">{{ item.carbon_reduction|default:"0.00"|floatformat:2 }} kg</td>
+                        <td class="p-4">
+                            <form method="post" action="{% url 'cart:cart_remove' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                                <input type="hidden" name="option_id" value="{{ item.option_id }}">
+                                <button type="submit" class="text-red-600 hover:text-red-800 text-lg">❌</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.product_name }}</td>
-                    <td>{{ item.option_name|default:"-" }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>${{ item.price|floatformat:2 }}</td>
-                    <td>${{ item.total_price|floatformat:2 }}</td>
-                    <td>{{ item.carbon_reduction|default:"0.00"|floatformat:2 }} kg</td>
-                    <td>
-                        <form method="post" action="{% url 'cart:cart_remove' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="product_id" value="{{ item.product_id }}">
-                            <input type="hidden" name="option_id" value="{{ item.option_id }}">
-                            <button type="submit" class="remove-btn">❌</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="totals">
+        <div class="text-right mt-6 space-y-2 text-gray-800 text-lg">
             <p><strong>รวมทั้งหมด:</strong> ${{ cart_total|floatformat:2 }}</p>
             <p><strong>รวมลดคาร์บอน:</strong> {{ carbon_total|default:"0.00"|floatformat:2 }} kg</p>
-            <form method="post" action="{% url 'cart:cart_clear' %}">
+            <form method="post" action="{% url 'cart:cart_clear' %}" class="mt-4">
                 {% csrf_token %}
-                <button type="submit" class="clear-all-btn">🗑️ ล้างตะกร้าทั้งหมด</button>
+                <button type="submit"
+                    class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded shadow">
+                    🗑️ ล้างตะกร้าทั้งหมด
+                </button>
             </form>
         </div>
     {% else %}
-        <p class="empty-cart">ไม่มีสินค้าในตะกร้า</p>
+        <p class="text-center text-lg text-gray-500">ไม่มีสินค้าในตะกร้า</p>
     {% endif %}
 </div>
+
 {% endblock %}

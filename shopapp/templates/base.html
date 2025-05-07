@@ -44,7 +44,14 @@
                     🔍
                 </button>
             </form>
-            <a href="{% url 'cart:cart_detail' %}" class="text-2xl hover:text-yellow-300 transition hover-scale animate-on-load">🛒</a>
+            <a href="{% url 'cart:cart_detail' %}" class="relative text-2xl hover:text-yellow-300 transition">
+                🛒
+                {% if cart_quantity > 0 %}
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full animate-bounce">
+                        {{ cart_quantity }}
+                    </span>
+                {% endif %}
+            </a>
         </div>
     </div>
 </header>
