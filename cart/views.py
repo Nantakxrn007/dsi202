@@ -29,7 +29,7 @@ class CartAddView(View):
                 'carbon_reduction': float(product.carbon_reduction),
                 'image_url': product.image.url if product.image else '',  # ✅ เพิ่มตรงนี้
             }
-        print(request.session['cart'])  # ดูใน console
+        # print(request.session['cart'])  # ดูใน console
         request.session['cart'] = cart
         return redirect('cart:cart_detail')
 

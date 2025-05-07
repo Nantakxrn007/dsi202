@@ -1,6 +1,10 @@
 from django.views.generic import ListView, DetailView, TemplateView
 from .models import Product
 from django.db.models import Q  # สำหรับค้นหาแบบ flexible
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
 
 class HomePageView(ListView):
     model = Product
@@ -35,3 +39,12 @@ class ProductDetailView(DetailView):
 
 class FirstPageView(TemplateView):
     template_name = 'first.html'
+
+
+
+
+@login_required
+def user_profile(request):
+    return render(request, 'user_profile.html', {
+        'user': request.user,
+    })

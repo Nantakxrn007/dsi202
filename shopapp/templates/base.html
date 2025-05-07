@@ -52,7 +52,20 @@
                     </span>
                 {% endif %}
             </a>
+            <!-- ปุ่มโปรไฟล์ -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'user_profile' %}"
+            class="text-sm bg-white bg-opacity-20 border border-white px-4 py-2 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale">
+                โปรไฟล์
+            </a>
+            {% else %}
+            <a href="{% url 'social:begin' 'google-oauth2' %}"
+            class="text-sm bg-yellow-300 px-4 py-2 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale">
+                เข้าสู่ระบบ
+            </a>
+            {% endif %}
         </div>
+
     </div>
 </header>
 
