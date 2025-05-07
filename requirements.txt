@@ -1,2 +1,3 @@
 Django
 Pillow 
+social-auth-app-django

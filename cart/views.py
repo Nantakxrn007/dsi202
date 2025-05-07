@@ -27,8 +27,9 @@ class CartAddView(View):
                 'quantity': quantity,
                 'price': float(product.price),
                 'carbon_reduction': float(product.carbon_reduction),
+                'image_url': product.image.url if product.image else '',  # ✅ เพิ่มตรงนี้
             }
-
+        print(request.session['cart'])  # ดูใน console
         request.session['cart'] = cart
         return redirect('cart:cart_detail')
 
@@ -53,6 +54,7 @@ class CartDetailView(View):
                 'carbon_reduction': item['carbon_reduction'],
                 'product_id': item['product_id'],     # ← เพิ่ม
                 'option_id': item['option_id'],       # ← เพิ่ม
+                'image_url': item['image_url'],  # ✅ เพิ่มบรรทัดนี้
             })
 
         context = {

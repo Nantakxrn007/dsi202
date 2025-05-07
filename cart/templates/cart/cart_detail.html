@@ -24,7 +24,14 @@
                 <tbody class="text-gray-700">
                     {% for item in cart_items %}
                     <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="p-4">{{ item.product_name }}</td>
+                        <td class="p-4">
+                            {% if item.image_url %}
+                            <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="w-36 h-36 object-cover rounded-md mx-auto">
+                            {% else %}
+                                <span class="text-gray-400">ไม่มีรูป</span>
+                            {% endif %}
+                            <div>{{ item.product_name }}</div>
+                        </td>
                         <td class="p-4">{{ item.option_name|default:"-" }}</td>
                         <td class="p-4">{{ item.quantity }}</td>
                         <td class="p-4">${{ item.price|floatformat:2 }}</td>
