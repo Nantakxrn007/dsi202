@@ -15,6 +15,8 @@ services:
       - DB_PASSWORD=root123
       - DB_HOST=db
       - DB_PORT=3306
+    env_file:
+      - .env
     command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 
   db:
