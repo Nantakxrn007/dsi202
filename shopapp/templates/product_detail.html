@@ -43,7 +43,7 @@
                 </p>
             </div>
 
-            <form method="post" action="{% url 'cart:cart_add' %}" class="flex flex-col gap-5 mt-4" id="add-to-cart-form">
+            <form method="post" action="#" class="flex flex-col gap-5 mt-4" >
                 {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
 
@@ -83,10 +83,7 @@
                     </span>
                 </button>
             </form>
-            <!-- ข้อความแจ้งเตือน -->
-            <div id="cart-notification" style="display:none; background-color: green; color: white; padding: 10px;">
-                สินค้าได้ถูกเพิ่มลงในตะกร้าแล้ว!
-            </div>
+
         </div>
     </div>
 

@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopapp',
-    'cart',
     'social_django',
 
 ]
@@ -50,7 +49,10 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # ใช้ SQLite สำหรับ session
+SESSION_COOKIE_SECURE = False  # สำหรับทดสอบในเครื่อง
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = '/'
@@ -69,10 +71,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
+
 ROOT_URLCONF = 'shop.urls'
 
 TEMPLATES = [
@@ -86,7 +85,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processors.cart_quantity',  # 👈 เพิ่มบรรทัดนี้
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
             ],
@@ -145,7 +143,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'shopapp/static'),
-    os.path.join(BASE_DIR, 'cart/static'),
 ]
 
 # Default primary key field type
