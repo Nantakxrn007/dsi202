@@ -84,54 +84,60 @@
 </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("add-to-cart-form");
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("add-to-cart-form");
 
-        if (!form) {
-            console.warn("Form #add-to-cart-form not found");
-            return;
-        }
+    if (!form) {
+        console.warn("Form #add-to-cart-form not found");
+        return;
+    }
 
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
 
-            var formData = new FormData(this);
-
-            fetch(form.action, {  // ใช้ action จาก <form action="{% url 'cart:cart_add' %}">
-                method: "POST",
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': formData.get("csrfmiddlewaretoken")  // ดึง CSRF จากฟอร์ม
+        fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get("csrfmiddlewaretoken")
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // ✅ Show Notification
+                const notif = document.getElementById("cart-notification");
+                if (notif) {
+                    notif.style.display = "block";
+                    setTimeout(() => notif.style.display = "none", 3000);
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // ✅ แจ้งเตือน
-                    const notif = document.getElementById("cart-notification");
-                    if (notif) {
-                        notif.style.display = "block";
-                        setTimeout(() => notif.style.display = "none", 3000);
-                    }
 
-                    // ✅ อัปเดตตัวเลขใน header
-                    const cartCount = document.getElementById("cart-count");
-                    console.log("Element cartCount:", cartCount); // ตรวจสอบอีกครั้ง
-                    console.log("data.cart_quantity:", data.cart_quantity);
-                    if (cartCount) {
-                        cartCount.textContent = data.cart_quantity;
-                        console.log("Cart count updated to:", data.cart_quantity);
-                    } else {
-                        console.warn("Cart count element not found!");
-                    }
+                // ✅ Update cart count in header
+                const cartCount = document.getElementById("cart-count");
+                console.log("Element cartCount:", cartCount);
+                console.log("data.cart_quantity:", data.cart_quantity);
+
+                if (cartCount) {
+                    cartCount.textContent = data.cart_quantity;
+                    console.log("Cart count updated to:", data.cart_quantity);
+                } else {
+                    console.warn("Cart count element not found! Creating...");
+                    const newCartCount = document.createElement("span");
+                    newCartCount.id = "cart-count";
+                    newCartCount.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full animate-bounce";
+                    newCartCount.textContent = data.cart_quantity;
+                    document.querySelector("a[href='{% url 'cart:cart_detail' %}']").appendChild(newCartCount);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     });
+});
+
 </script>
 
 
