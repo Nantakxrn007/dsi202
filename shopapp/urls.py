@@ -10,5 +10,6 @@ urlpatterns = [
     path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('profile/', views.user_profile, name='user_profile'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('cart/', include('cart.urls')),
 
 ]

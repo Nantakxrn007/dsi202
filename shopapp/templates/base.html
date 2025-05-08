@@ -43,7 +43,7 @@
                     🔍
                 </button>
             </form>
-            <a href="#" class="relative text-2xl hover:text-yellow-300 transition">
+            <a href="{% url 'view_cart' %}" class="relative text-2xl hover:text-yellow-300 transition">
                 🛒
             </a>
             {% if user.is_authenticated %}

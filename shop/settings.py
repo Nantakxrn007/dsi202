@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopapp',
     'social_django',
+    'cart'
 
 ]
 
@@ -47,6 +48,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # ใช้ SQLite สำหรับ session
 SESSION_COOKIE_SECURE = False  # สำหรับทดสอบในเครื่อง
 SESSION_COOKIE_HTTPONLY = True
