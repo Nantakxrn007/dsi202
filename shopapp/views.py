@@ -1,3 +1,4 @@
+# shopapp/views.py
 from django.views.generic import ListView, DetailView, TemplateView
 from .models import Product
 from django.db.models import Q  # สำหรับค้นหาแบบ flexible

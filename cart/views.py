@@ -33,12 +33,10 @@ def add_to_cart(request, product_id):
 
     return redirect('view_cart')
 
-@login_required
 def remove_from_cart(request, item_id):
     try:
         item = CartItem.objects.get(id=item_id)
-        item.delete()  # ลบไอเท็มจากตะกร้า
+        item.delete()
     except CartItem.DoesNotExist:
-        pass  # ถ้าไอเท็มไม่พบ จะไม่ทำอะไร
-
-    return redirect('cart:view_cart')  # ส่งกลับไปที่หน้า "view_cart"
+        pass
+    return redirect('cart:view_cart')  # ใช้ชื่อที่ถูกต้อง

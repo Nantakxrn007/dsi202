@@ -1,66 +1,81 @@
-<!-- cart/templates/cart/view_cart.html -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}ตะกร้าสินค้า{% endblock %}
 
 {% block content %}
-  <div class="container mx-auto py-12 px-4">
-    <h2 class="text-3xl font-semibold text-center mb-8">ตะกร้าสินค้าของคุณ</h2>
+<div class="py-12 bg-gray-50">
+    <div class="bg-white shadow-2xl rounded-3xl p-8 max-w-5xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 animate-bounce-in">ตะกร้าสินค้าของคุณ</h2>
 
-    {% if cart.items.all %}
-      <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-        <thead>
-          <tr class="border-b bg-gray-100 text-left">
-            <th class="py-4 px-6">ภาพสินค้า</th>
-            <th class="py-4 px-6">ชื่อสินค้า</th>
-            <th class="py-4 px-6">ตัวเลือก</th>
-            <th class="py-4 px-6">ราคา</th>
-            <th class="py-4 px-6">จำนวน</th>
-            <th class="py-4 px-6">จำนวนคาร์บอน</th>
-            <th class="py-4 px-6">รวม</th>
-            <th class="py-4 px-6">ลบ</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in cart.items.all %}
-            <tr class="border-b hover:bg-gray-50 transition duration-300">
-              <td class="py-4 px-6">
-                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-20 h-20 object-cover rounded-lg">
-              </td>
-              <td class="py-4 px-6">{{ item.product.name }}</td>
-              <td class="py-4 px-6">
-                {% if item.option %}
-                  {{ item.option.name }}
-                {% else %}
-                  ไม่มีตัวเลือก
-                {% endif %}
-              </td>
-              <td class="py-4 px-6">{{ item.product.price }}</td>
-              <td class="py-4 px-6">{{ item.quantity }}</td>
-              <td class="py-4 px-6">{{ item.carbon_reduction }}</td>
-              <td class="py-4 px-6">{{ item.total_price }}</td>
-              <td class="py-4 px-6">
-                <form method="POST" action="{% url 'remove_from_cart' item.id %}">
-                  {% csrf_token %}
-                  <button type="submit" class="text-red-500 hover:text-red-700 transition duration-300">
-                    <i class="fas fa-trash-alt"></i> ลบ
-                  </button>
-                </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        {% if cart.items.all %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead class="bg-gray-100">
+                    <tr class="text-left">
+                        <th class="py-4 px-6 font-semibold text-gray-700">สินค้า</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700">ตัวเลือก</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700">ราคา</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700">จำนวน</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700">ลดคาร์บอน</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700">รวม</th>
+                        <th class="py-4 px-6 font-semibold text-gray-700"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart.items.all %}
+                    <tr class="hover:bg-gray-50 transition duration-300">
+                        <td class="py-4 px-6 flex items-center">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-24 h-24 object-cover rounded-lg mr-4">
+                            <div class="">
+                                <div class="font-semibold text-gray-800">{{ item.product.name }}</div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">
+                            {% if item.option %}
+                                <div class="text-sm text-gray-500">{{ item.option.name }}</div>
+                            {% else %}
+                                <div class="text-sm text-gray-500">ไม่มีตัวเลือก</div>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 text-red-600 font-bold">{{ item.product.price }} บาท</td>
+                        <td class="py-4 px-6">{{ item.quantity }}</td>
+                        <td class="py-4 px-6 text-green-600 font-semibold">{{ item.carbon_reduction }} กก.</td>
+                        <td class="py-4 px-6">{{ item.total_price }} บาท</td>
+                        <td class="py-4 px-6">
+                            <form method="POST" action="{% url 'cart:remove_from_cart' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-500 hover:text-red-700 transition duration-300">
+                                    <i class="fas fa-trash-alt"></i> ลบ
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-      <div class="mt-8 flex justify-end">
-        <p class="text-xl font-semibold">ยอดรวม: <span class="text-green-500">{{ cart.total_price }} บาท</span></p>
-      </div>
+        <div class="mt-8 flex justify-end">
+            <div class="text-right">
+                <p class="text-xl font-semibold text-gray-800">ยอดรวมทั้งหมด: <span class="text-green-500">{{ cart.total_price }} บาท</span></p>
+            </div>
+        </div>
 
-      <!-- ลบปุ่ม "ไปที่การชำระเงิน" ออก -->
+        {% else %}
+        <p class="text-center text-gray-500 py-8">ไม่มีสินค้าในตะกร้าของคุณ</p>
+        {% endif %}
+    </div>
+</div>
 
-    {% else %}
-      <p class="text-center text-gray-500">ไม่มีสินค้าในตะกร้า</p>
-    {% endif %}
-  </div>
+<style>
+    @keyframes bounce-in {
+        0% { opacity: 0; transform: scale(0.8); }
+        60% { opacity: 0.7; transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    .animate-bounce-in {
+        animation: bounce-in 0.6s ease-out;
+    }
+</style>
 {% endblock %}
