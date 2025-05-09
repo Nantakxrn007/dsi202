@@ -1,5 +1,33 @@
-Django
-Pillow 
-social-auth-app-django
-python-dotenv
-mysqlclient
+Django==4.2.21
+Pillow==11.2.1
+social-auth-app-django==5.4.3
+python-dotenv==1.1.0
+mysqlclient==2.2.7
+
+
+
+# asgiref                3.8.1
+# certifi                2025.4.26
+# cffi                   1.17.1
+# charset-normalizer     3.4.2
+# cryptography           44.0.3
+# defusedxml             0.7.1
+# Django                 4.2.21
+# idna                   3.10
+# mysqlclient            2.2.7
+# oauthlib               3.2.2
+# pillow                 11.2.1
+# pip                    23.0.1
+# pycparser              2.22
+# PyJWT                  2.10.1
+# python-dotenv          1.1.0
+# python3-openid         3.2.0
+# requests               2.32.3
+# requests-oauthlib      2.0.0
+# setuptools             58.1.0
+# social-auth-app-django 5.4.3
+# social-auth-core       4.6.1
+# sqlparse               0.5.3
+# typing_extensions      4.13.2
+# urllib3                2.4.0
+# wheel                  0.45.1
