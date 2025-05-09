@@ -31,7 +31,8 @@ def add_to_cart(request, product_id):
         item.quantity = quantity
     item.save()
 
-    return redirect('view_cart')
+    return redirect('cart:view_cart')
+
 
 def remove_from_cart(request, item_id):
     try:
@@ -40,3 +41,23 @@ def remove_from_cart(request, item_id):
     except CartItem.DoesNotExist:
         pass
     return redirect('cart:view_cart')  # ใช้ชื่อที่ถูกต้อง
+
+
+@login_required
+def update_cart_item(request, item_id):
+    if request.method == 'POST':
+        try:
+            item = CartItem.objects.get(id=item_id)
+            quantity = int(request.POST.get('quantity', item.quantity))
+            option_id = request.POST.get('option_id')
+            option = ProductOption.objects.get(id=option_id) if option_id else item.option
+
+            if quantity > 0:
+                item.quantity = quantity
+                item.option = option
+                item.save()
+            else:
+                item.delete()
+        except CartItem.DoesNotExist:
+            pass
+    return redirect('cart:view_cart')

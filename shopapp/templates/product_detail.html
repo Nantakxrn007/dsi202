@@ -43,7 +43,7 @@
                 </p>
             </div>
 
-            <form method="post" action="{% url 'add_to_cart' product.id %}" class="flex flex-col gap-5 mt-4" >
+            <form method="post" action="{% url 'cart:add_to_cart' product.id %}" class="flex flex-col gap-5 mt-4" >
                 {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
 
