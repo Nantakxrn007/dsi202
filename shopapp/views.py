@@ -3,7 +3,9 @@ from django.views.generic import ListView, DetailView, TemplateView
 from .models import Product
 from django.db.models import Q  # สำหรับค้นหาแบบ flexible
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 
 
@@ -42,10 +44,20 @@ class FirstPageView(TemplateView):
     template_name = 'first.html'
 
 
-
-
 @login_required
 def user_profile(request):
     return render(request, 'user_profile.html', {
         'user': request.user,
     })
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # ล็อกอินทันทีหลังสมัคร
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
