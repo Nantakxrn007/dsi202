@@ -3,11 +3,12 @@ from shopapp.models import Product, ProductOption
 from django.contrib.auth.models import User
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=32, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Cart of {self.user.username}"
+        return f"Cart of {self.user.username if self.user else self.session_key}"
 
     def total_price(self):
         return sum(item.total_price() for item in self.items.all())
@@ -29,13 +30,11 @@ class CartItem(models.Model):
         return f"{self.quantity} x {self.product.name} ({option_name})"
 
     def total_price(self):
-        # คำนวณราคารวม (ใช้ราคาของตัวเลือกถ้ามี, ถ้าไม่มีใช้ราคาสินค้า)
         price = self.product.price
         if self.option and hasattr(self.option, 'price'):
-            price = self.option.price  # ใช้ราคาของตัวเลือกถ้ามี
+            price = self.option.price
         return price * self.quantity
 
     def carbon_reduction(self):
-        # คำนวณการลดคาร์บอน
-        carbon = getattr(self.product, 'carbon_reduction', 0)  # ใช้ 0 ถ้าไม่มีค่า
+        carbon = getattr(self.product, 'carbon_reduction', 0)
         return carbon * self.quantity

@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
+from cart.views import get_cart
 
 
 class HomePageView(ListView):
@@ -53,6 +54,8 @@ def signup_view(request):
             user.email = form.cleaned_data.get('email')
             user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            # โอน session cart ไปยังตะกร้าผู้ใช้
+            get_cart(request)  # เรียก get_cart เพื่อโอนสินค้า
             return redirect('home')
     else:
         form = CustomUserCreationForm()
