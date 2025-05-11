@@ -5,12 +5,12 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    path('', FirstPageView.as_view(), name='first'),  # หน้าหลัก เริ่มที่ first
-    path('home/', HomePageView.as_view(), name='home'),
-    path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
-    path('profile/', views.user_profile, name='user_profile'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('cart/', include('cart.urls', namespace='cart')),  # เพิ่ม namespace='cart' ตรงนี้
-    path('signup/', signup_view, name='signup'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-]
+        path('', FirstPageView.as_view(), name='first'),  # หน้าหลัก เริ่มที่ first
+        path('home/', HomePageView.as_view(), name='home'),
+        path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+        path('profile/', views.user_profile, name='user_profile'),
+        path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+        path('cart/', include('cart.urls', namespace='cart')),  # เพิ่ม namespace='cart' ตรงนี้
+        path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+        path('signup/', signup_view, name='signup')
+    ]
