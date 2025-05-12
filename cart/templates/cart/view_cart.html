@@ -81,7 +81,7 @@
                         <p class="text-xl font-semibold text-gray-800">ยอดรวม: <span class="text-green-600">{{ cart.total_price }} บาท</span></p>
                         <p class="text-lg text-gray-700">ลดคาร์บอน: <span class="text-green-600">{{ cart.total_carbon_reduction }} กก.</span></p>
                     </div>
-                    <a href="{% url 'cart:checkout' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
+                    <a href="{% url 'order:checkout' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
                         ดำเนินการสั่งซื้อ
                     </a>
                 </div>

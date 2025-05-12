@@ -124,4 +124,4 @@ def update_cart_item(request, item_id):
 @login_required
 def checkout(request):
     cart = get_cart(request)
-    return render(request, 'cart/checkout.html', {'cart': cart})
+    return render(request, 'order/checkout.html', {'cart': cart})

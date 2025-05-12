@@ -10,7 +10,8 @@ urlpatterns = [
     path('', include('shopapp.urls')), #name your app
     path('auth/', include('social_django.urls', namespace='social')),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
-    
+    path('order/', include('order.urls')),
+
 
 ]
 
