@@ -11,7 +11,7 @@ class Address(models.Model):
     sub_district = models.CharField(max_length=100, default='ตำบล/เขต')
     postal_code = models.CharField(max_length=10, default='00000')
     address_detail = models.TextField(default='บ้านเลขที่/หมู่บ้าน/ถนน')
-    note = models.TextField(blank=True, default='')  # หมายเหตุไม่บังคับ
+    note = models.TextField(blank=True, default='')
     phone_number = models.CharField(max_length=15, default='0000000000')
     is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -37,12 +37,21 @@ class Order(models.Model):
         ('CANCELLED', 'ยกเลิก'),
     ]
 
+    PAYMENT_STATUS_CHOICES = [
+        ('PENDING', 'รอการชำระเงิน'),
+        ('COMPLETED', 'ชำระเงินแล้ว'),
+        ('FAILED', 'การชำระเงินล้มเหลว'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total_carbon_reduction = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING')
+    promptpay_id = models.CharField(max_length=13, blank=True, null=True)  # หมายเลขโทรศัพท์หรือเลขบัตรประชาชน
+    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True)  # เก็บ QR Code
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

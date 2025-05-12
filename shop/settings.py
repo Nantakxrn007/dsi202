@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'cart',
     'order',
 
-
 ]
+PROMPTPAY_ID = os.getenv('PROMPTPAY_ID')  
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
