@@ -1,3 +1,4 @@
+# shopapp/admin.py
 from django.contrib import admin
 from .models import Product, ProductOption, SaleInformation
 
@@ -11,10 +12,11 @@ class SaleInformationInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'carbon_reduction', 'is_on_sale', 'discount_percentage']  # Add these
+    list_display = ['name', 'price', 'carbon_reduction', 'category', 'is_on_sale', 'discount_percentage']
     inlines = [ProductOptionInline, SaleInformationInline]
+    list_filter = ['category']  # Add category filter in admin
 
-    def is_on_sale(self, obj): # Function to display if on sale
+    def is_on_sale(self, obj):
         try:
             return obj.sale_informations.first().is_on_sale
         except:
@@ -22,11 +24,11 @@ class ProductAdmin(admin.ModelAdmin):
     is_on_sale.boolean = True
     is_on_sale.short_description = 'On Sale'
 
-    def discount_percentage(self, obj): # Function to display discount
-         try:
+    def discount_percentage(self, obj):
+        try:
             return obj.sale_informations.first().discount_percentage
-         except:
-             return None
+        except:
+            return None
     discount_percentage.short_description = 'Discount (%)'
 
 admin.site.register(ProductOption)

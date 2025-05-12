@@ -1,7 +1,15 @@
-#shopapp models.py
+# shopapp/models.py
 from django.db import models
 
 class Product(models.Model):
+    # Define category choices
+    CATEGORY_CHOICES = [
+        ('GENERAL', 'ของใช้ทั่วไป'),
+        ('CLOTHING', 'เครื่องแต่งกาย'),
+        ('KITCHEN', 'เครื่องครัว'),
+        ('PLANT', 'ต้นไม้'),
+    ]
+    
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='products/')
     description = models.TextField()
@@ -9,6 +17,12 @@ class Product(models.Model):
     carbon_reduction = models.DecimalField(
         max_digits=6, decimal_places=2, default=0.00,
         help_text="จำนวนคาร์บอนที่ลดได้ (กิโลกรัม)"
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='GENERAL',
+        help_text="หมวดหมู่ของสินค้า"
     )
 
     def __str__(self):

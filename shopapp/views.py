@@ -1,7 +1,7 @@
 # shopapp/views.py
 from django.views.generic import ListView, DetailView, TemplateView
 from .models import Product
-from django.db.models import Q  # สำหรับค้นหาแบบ flexible
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -10,7 +10,6 @@ from .forms import CustomUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
 from cart.views import get_cart
 
-
 class HomePageView(ListView):
     model = Product
     template_name = 'home.html'
@@ -18,23 +17,30 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        category = self.request.GET.get('category')
 
-        # ดึงสินค้าที่เป็น Flash Sale ก่อน
+        # Get flash sale products first
         flash_sale_products = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
         flash_sale_ids = flash_sale_products.values_list('id', flat=True)
 
+        queryset = Product.objects.exclude(id__in=flash_sale_ids)
+
         if query:
-            return Product.objects.filter(
+            queryset = queryset.filter(
                 Q(name__icontains=query) |
                 Q(description__icontains=query)
-            ).exclude(id__in=flash_sale_ids)
+            )
+        
+        if category:
+            queryset = queryset.filter(category=category)
 
-        return Product.objects.exclude(id__in=flash_sale_ids)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # ส่ง flash_sale_products ไปยัง template
         context['flash_sale_products'] = Product.objects.filter(sale_informations__is_on_sale=True).distinct()
+        context['categories'] = Product.CATEGORY_CHOICES  # Send categories to template
+        context['selected_category'] = self.request.GET.get('category', '')  # Current selected category
         return context
 
 class ProductDetailView(DetailView):
@@ -54,8 +60,7 @@ def signup_view(request):
             user.email = form.cleaned_data.get('email')
             user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            # โอน session cart ไปยังตะกร้าผู้ใช้
-            get_cart(request)  # เรียก get_cart เพื่อโอนสินค้า
+            get_cart(request)
             return redirect('home')
     else:
         form = CustomUserCreationForm()

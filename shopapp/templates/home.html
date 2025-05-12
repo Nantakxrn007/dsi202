@@ -5,6 +5,46 @@
 {% block header_class %}sticky-header{% endblock %}
 
 {% block content %}
+{% block category %}
+<!-- Category Section: Displays clickable category cards -->
+<div class="relative py-12 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Section Header -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 animate-bounce-in">เลือกซื้อตามหมวดหมู่</h2>
+        
+        <!-- Category Grid: Responsive 2-4 column layout -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for category_value, category_name in categories %}
+            <a href="{% url 'home' %}?category={{ category_value }}" 
+               class="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transform transition-all duration-500 hover:-translate-y-2 group">
+                <div class="text-4xl mb-4">
+                    {% if category_value == 'GENERAL' %}🧴
+                    {% elif category_value == 'KITCHEN' %}🍴
+                    {% elif category_value == 'CLOTHING' %}👗
+                    {% elif category_value == 'PLANT' %}🌱
+                    {% endif %}
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">
+                    {{ category_name }}
+                </h3>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Category Section -->
+<style>
+    @keyframes bounce-in {
+        0% { opacity: 0; transform: scale(0.8); }
+        60% { opacity: 0.7; transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    .animate-bounce-in {
+        animation: bounce-in 0.6s ease-out;
+    }
+</style>
+{% endblock category %}
 {% block flash_sale %}
 <!-- Hero Section: Flash Sale with Gradient Background and Countdown Timer -->
 <div class="relative py-12 via-white to-purple-50 overflow-hidden">
