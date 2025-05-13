@@ -4,65 +4,64 @@
 {% block title %}คำสั่งซื้อที่จัดส่งสำเร็จ{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-6xl mx-auto">
-        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-            <!-- Filter Buttons -->
-            <div class="flex justify-center space-x-4 mb-8">
-                <a href="{% url 'order:order_status' %}?filter=unpaid"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-green-600 hover:bg-green-700">
-                    ยังไม่ได้ชำระ
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=shipping"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700">
-                    กำลังจัดส่ง
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=delivered"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-teal-700">
-                    เสร็จสิ้น
-                </a>
-            </div>
+<div class="min-h-screen bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+            คำสั่งซื้อที่จัดส่งสำเร็จ
+        </h2>
 
-            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
-                คำสั่งซื้อที่จัดส่งสำเร็จ
-            </h2>
+        <div class="flex justify-center space-x-3 mb-8">
+            <a href="{% url 'order:order_status' %}?filter=unpaid"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full bg-green-100 text-green-600 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200">
+                ยังไม่ได้ชำระ
+            </a>
+            <a href="{% url 'order:order_status' %}?filter=shipping"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                กำลังจัดส่ง
+            </a>
+            <a href="{% url 'order:order_status' %}?filter=delivered"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full bg-teal-500 text-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200">
+                เสร็จสิ้น
+            </a>
+        </div>
 
-            <!-- Delivered Orders List -->
-            <div class="mb-12">
-                {% if delivered_orders %}
-                {% for order in delivered_orders %}
-                <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">คำสั่งซื้อ #{{ order.id }}</h3>
+        <div class="space-y-4">
+            {% if delivered_orders %}
+            {% for order in delivered_orders %}
+            <div class="bg-white rounded-md shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">คำสั่งซื้อ #{{ order.id }}</h3>
+                <ul class="divide-y divide-gray-200">
                     {% for item in order.items.all %}
-                    <div class="flex justify-between items-center py-3 border-b last:border-b-0">
+                    <li class="py-2 flex justify-between items-center">
                         <div>
-                            <p class="text-lg font-medium text-gray-900">{{ item.product.name }}</p>
+                            <p class="text-sm font-medium text-gray-800">{{ item.product.name }}</p>
                             {% if item.option %}
-                            <p class="text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
+                            <p class="text-xs text-gray-500">{{ item.option.name }}</p>
                             {% endif %}
-                            <p class="text-sm text-gray-500">จำนวน: {{ item.quantity }}</p>
+                            <p class="text-xs text-gray-500">จำนวน: {{ item.quantity }}</p>
                         </div>
-                        <p class="text-lg font-semibold text-gray-900">{{ item.price|floatformat:2 }} บาท</p>
-                    </div>
+                        <span class="font-semibold text-gray-700">{{ item.price|floatformat:2 }} บาท</span>
+                    </li>
                     {% endfor %}
-                    <div class="flex justify-between items-center pt-4">
-                        <p class="text-xl font-semibold text-gray-800">ยอดรวม:</p>
-                        <p class="text-xl font-bold text-green-600">{{ order.total_price }} บาท</p>
-                    </div>
+                    <li class="py-2 flex justify-between items-center font-semibold text-gray-800">
+                        <span>ยอดรวม</span>
+                        <span>{{ order.total_price }} บาท</span>
+                    </li>
+                </ul>
+                <div class="mt-4">
+                    <p class="text-sm text-gray-500">วันที่สั่งซื้อ: {{ order.created_at|date:"d/m/Y H:i" }}</p>
                 </div>
-                {% endfor %}
-                {% else %}
-                <p class="text-center text-gray-600">ไม่มีคำสั่งซื้อที่จัดส่งสำเร็จในขณะนี้</p>
-                {% endif %}
             </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center text-gray-600">ไม่มีคำสั่งซื้อที่จัดส่งสำเร็จในขณะนี้</p>
+            {% endif %}
+        </div>
 
-            <!-- Actions -->
-            <div class="text-center">
-        
-                <a href="{% url 'home' %}" class="inline-block text-green-600 hover:text-green-700 font-medium ml-4">
-                    กลับไปหน้าหลัก
-                </a>
-            </div>
+        <div class="mt-8 text-center">
+            <a href="{% url 'order:order_status' %}" class="text-blue-600 hover:text-blue-700 font-medium transition duration-200">
+                กลับไปหน้าสถานะคำสั่งซื้อ
+            </a>
         </div>
     </div>
 </div>

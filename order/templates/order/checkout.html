@@ -1,4 +1,3 @@
-  <!-- checkout.html -->
 {% extends 'base.html' %}
 {% load static %}
 
@@ -6,60 +5,30 @@
 
 {% block content %}
 
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-start items-center p-4 bg-white shadow-lg rounded-lg mb-6 border-l-4 border-green-500 transform hover:scale-[1.02] transition duration-300">
-        <a href="{% url 'cart:view_cart' %}" class="flex items-center text-green-600 text-lg font-medium px-6 py-2.5 rounded-lg bg-green-50 hover:bg-green-500 hover:text-white transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-md group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span class="relative">
+<div class="min-h-screen bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8 md:p-12">
+        <div class="mb-8">
+            <a href="{% url 'cart:view_cart' %}" class="inline-flex items-center text-green-600 hover:text-green-700 font-medium transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
                 กลับหน้าตระกร้า
-                <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
-            </span>
-        </a>
-    </div>
-    <div class="max-w-6xl mx-auto">
-        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
-                ดำเนินการสั่งซื้อ
-            </h2>
+            </a>
+        </div>
 
-            <!-- Order Summary -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">สรุปคำสั่งซื้อ</h3>
-                <div class="bg-white rounded-2xl shadow-md p-6">
-                    {% for item in cart.items.all %}
-                    <div class="flex justify-between items-center py-3 border-b last:border-b-0">
-                        <div>
-                            <p class="text-lg font-medium text-gray-900">{{ item.product.name }}</p>
-                            {% if item.option %}
-                            <p class="text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
-                            {% endif %}
-                            <p class="text-sm text-gray-500">จำนวน: {{ item.quantity }}</p>
-                        </div>
-                        <p class="text-lg font-semibold text-gray-900">{{ item.total_price }} บาท</p>
-                    </div>
-                    {% endfor %}
-                    <div class="flex justify-between items-center pt-4">
-                        <p class="text-xl font-semibold text-gray-800">ยอดรวม:</p>
-                        <p class="text-xl font-bold text-green-600">{{ cart.total_price }} บาท</p>
-                    </div>
-                    <div class="flex justify-between items-center pt-2">
-                        <p class="text-lg text-gray-700">ลดคาร์บอน:</p>
-                        <p class="text-lg text-green-600">{{ cart.total_carbon_reduction }} กก.</p>
-                    </div>
-                </div>
-            </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+            ดำเนินการสั่งซื้อ
+        </h2>
 
-            <!-- Address Selection -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">ที่อยู่จัดส่ง</h3>
+        <div class="md:grid md:grid-cols-2 md:gap-8">
+            <div class="md:col-span-1">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">ที่อยู่จัดส่ง</h3>
                 <form method="post" class="space-y-6" id="checkout-form">
                     {% csrf_token %}
                     {% if addresses %}
                     <div>
-                        <label class="block text-lg font-medium text-gray-700 mb-2">เลือกที่อยู่</label>
-                        <select name="address_id" id="address-select" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-green-500 bg-gray-50">
+                        <label for="address-select" class="block text-sm font-medium text-gray-700 mb-2">เลือกที่อยู่</label>
+                        <select name="address_id" id="address-select" class="w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
                             <option value="">-- เลือกที่อยู่ --</option>
                             {% for address in addresses %}
                             <option value="{{ address.id }}" {% if address.is_default %}selected{% endif %}>
@@ -68,48 +37,78 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <p class="text-sm text-gray-500 mb-4">หรือเพิ่มที่อยู่ใหม่:</p>
+                    <p class="text-sm text-gray-500 mb-3">หรือเพิ่มที่อยู่ใหม่:</p>
                     {% endif %}
-                    <div id="new-address-fields" class="{% if addresses %}hidden{% endif %}">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="full_name" class="block text-sm font-medium text-gray-700">ชื่อผู้รับ</label>
-                                <input type="text" name="full_name" id="full_name" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
-                            </div>
-                            <div>
-                                <label for="phone_number" class="block text-sm font-medium text-gray-700">เบอร์โทรศัพท์</label>
-                                <input type="text" name="phone_number" id="phone_number" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
-                            </div>
+                    <div id="new-address-fields" class="{% if addresses %}hidden{% endif %} space-y-4">
+                        <div>
+                            <label for="full_name" class="block text-sm font-medium text-gray-700">ชื่อผู้รับ</label>
+                            <input type="text" name="full_name" id="full_name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
+                        </div>
+                        <div>
+                            <label for="phone_number" class="block text-sm font-medium text-gray-700">เบอร์โทรศัพท์</label>
+                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="province" class="block text-sm font-medium text-gray-700">จังหวัด</label>
-                                <input type="text" name="province" id="province" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
+                                <input type="text" name="province" id="province" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
                             </div>
                             <div>
                                 <label for="district" class="block text-sm font-medium text-gray-700">อำเภอ</label>
-                                <input type="text" name="district" id="district" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
+                                <input type="text" name="district" id="district" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
                             </div>
                             <div>
                                 <label for="sub_district" class="block text-sm font-medium text-gray-700">ตำบล/เขต</label>
-                                <input type="text" name="sub_district" id="sub_district" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
+                                <input type="text" name="sub_district" id="sub_district" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
                             </div>
                             <div>
                                 <label for="postal_code" class="block text-sm font-medium text-gray-700">รหัสไปรษณีย์</label>
-                                <input type="text" name="postal_code" id="postal_code" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500">
-                            </div>
-                            <div class="col-span-2">
-                                <label for="address_detail" class="block text-sm font-medium text-gray-700">ที่อยู่ (บ้านเลขที่/หมู่บ้าน/ถนน)</label>
-                                <textarea name="address_detail" id="address_detail" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500"></textarea>
-                            </div>
-                            <div class="col-span-2">
-                                <label for="note" class="block text-sm font-medium text-gray-700">หมายเหตุ (ถ้ามี)</label>
-                                <textarea name="note" id="note" class="w-full border border-gray-300 rounded-lg p-3 mt-1 focus:ring-2 focus:ring-green-500"></textarea>
+                                <input type="text" name="postal_code" id="postal_code" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white">
                             </div>
                         </div>
+                        <div>
+                            <label for="address_detail" class="block text-sm font-medium text-gray-700">ที่อยู่ (บ้านเลขที่/หมู่บ้าน/ถนน)</label>
+                            <textarea name="address_detail" id="address_detail" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white"></textarea>
+                        </div>
+                        <div>
+                            <label for="note" class="block text-sm font-medium text-gray-700">หมายเหตุ (ถ้ามี)</label>
+                            <textarea name="note" id="note" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-3 px-4 text-sm focus:ring-green-500 focus:border-green-500 bg-white"></textarea>
+                        </div>
                     </div>
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
-                        สั่งซื้อ
-                    </button>
+                    <div>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200">
+                            สั่งซื้อ
+                        </button>
+                    </div>
                 </form>
+            </div>
+
+            <div class="md:col-span-1">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">สรุปคำสั่งซื้อ</h3>
+                <div class="bg-gray-50 rounded-md shadow-sm p-6">
+                    <ul class="divide-y divide-gray-200 mb-4">
+                        {% for item in cart.items.all %}
+                        <li class="py-3 flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">{{ item.product.name }}</p>
+                                {% if item.option %}
+                                <p class="text-xs text-gray-500">{{ item.option.name }}</p>
+                                {% endif %}
+                                <p class="text-xs text-gray-500">จำนวน: {{ item.quantity }}</p>
+                            </div>
+                            <span class="font-semibold text-gray-700">{{ item.total_price }} บาท</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="py-3 flex justify-between items-center font-semibold text-gray-800">
+                        <span>ยอดรวม</span>
+                        <span>{{ cart.total_price }} บาท</span>
+                    </div>
+                    <div class="py-2 flex justify-between items-center text-gray-700">
+                        <span>ลดคาร์บอน</span>
+                        <span class="text-green-600">{{ cart.total_carbon_reduction }} กก.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,26 +118,26 @@
 document.addEventListener('DOMContentLoaded', function() {
     const addressSelect = document.getElementById('address-select');
     const newAddressFields = document.getElementById('new-address-fields');
+    const newAddressInputs = newAddressFields.querySelectorAll('input:not([id="note"]), textarea');
+
+    function toggleNewAddressFields() {
+        if (addressSelect && addressSelect.value) {
+            newAddressFields.classList.add('hidden');
+            newAddressInputs.forEach(field => field.removeAttribute('required'));
+        } else {
+            newAddressFields.classList.remove('hidden');
+            newAddressInputs.forEach(field => field.setAttribute('required', 'required'));
+        }
+    }
 
     if (addressSelect) {
-        addressSelect.addEventListener('change', function() {
-            if (this.value) {
-                newAddressFields.classList.add('hidden');
-                newAddressFields.querySelectorAll('input, textarea').forEach(field => {
-                    field.removeAttribute('required');
-                });
-            } else {
-                newAddressFields.classList.remove('hidden');
-                newAddressFields.querySelectorAll('input, textarea').forEach(field => {
-                    if (field.id !== 'note') {  // หมายเหตุไม่ต้อง required
-                        field.setAttribute('required', 'required');
-                    }
-                });
-            }
-        });
-
+        addressSelect.addEventListener('change', toggleNewAddressFields);
         // เรียก event change ครั้งแรก
-        addressSelect.dispatchEvent(new Event('change'));
+        toggleNewAddressFields();
+    } else {
+        // ถ้าไม่มี dropdown ที่อยู่ ให้แสดงฟอร์มเพิ่มที่อยู่ใหม่เลย
+        newAddressFields.classList.remove('hidden');
+        newAddressInputs.forEach(field => field.setAttribute('required', 'required'));
     }
 });
 </script>

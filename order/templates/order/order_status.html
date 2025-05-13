@@ -4,76 +4,77 @@
 {% block title %}สถานะคำสั่งซื้อ{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-6xl mx-auto">
-        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
-                สถานะคำสั่งซื้อ
-            </h2>
+<div class="min-h-screen bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+            สถานะคำสั่งซื้อ
+        </h2>
 
-            <!-- Filter Buttons -->
-            <div class="flex justify-center space-x-4 mb-8">
-                <a href="{% url 'order:order_status' %}?filter=unpaid"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
-                          {% if filter == 'unpaid' %}bg-green-700{% else %}bg-green-600 hover:bg-green-700{% endif %}">
-                    ยังไม่ได้ชำระ
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=shipping"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
-                          {% if filter == 'shipping' %}bg-blue-700{% else %}bg-blue-600 hover:bg-blue-700{% endif %}">
-                    กำลังจัดส่ง
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=delivered"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
-                          {% if filter == 'delivered' %}bg-teal-700{% else %}bg-teal-600 hover:bg-teal-700{% endif %}">
-                    เสร็จสิ้น
-                </a>
-            </div>
+        <div class="flex justify-center space-x-3 mb-8">
+            <a href="{% url 'order:order_status' %}?filter=unpaid"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full
+                      {% if filter == 'unpaid' %}bg-green-500 text-white{% else %}bg-green-100 text-green-600 hover:bg-green-200{% endif %}
+                      focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200">
+                ยังไม่ได้ชำระ
+            </a>
+            <a href="{% url 'order:order_status' %}?filter=shipping"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full
+                      {% if filter == 'shipping' %}bg-blue-500 text-white{% else %}bg-blue-100 text-blue-600 hover:bg-blue-200{% endif %}
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                กำลังจัดส่ง
+            </a>
+            <a href="{% url 'order:order_status' %}?filter=delivered"
+               class="inline-block px-4 py-2 text-sm font-semibold rounded-full
+                      {% if filter == 'delivered' %}bg-teal-500 text-white{% else %}bg-teal-100 text-teal-600 hover:bg-teal-200{% endif %}
+                      focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200">
+                เสร็จสิ้น
+            </a>
+        </div>
 
-            <!-- Order List -->
-            <div class="mb-12">
-                {% if orders %}
-                {% for order in orders %}
-                <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-xl font-semibold text-gray-900">คำสั่งซื้อ #{{ order.id }}</p>
-                            <p class="text-sm text-gray-500">สถานะ: {{ order.get_status_display }}</p>
-                            <p class="text-sm text-gray-500">สถานะการชำระเงิน: {{ order.get_payment_status_display }}</p>
-                            <p class="text-sm text-gray-500">ยอดรวม: {{ order.total_price }} บาท</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            {% if order.status == 'PENDING' and order.payment_status == 'PENDING' %}
-                            <a href="{% url 'order:payment' order_id=order.id %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
-                                ชำระเงิน
-                            </a>
-                            <a href="{% url 'order:cancel_order' order_id=order.id %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
-                                ยกเลิกคำสั่งซื้อ
-                            </a>
-                            {% elif order.status == 'DELIVERED' %}
-                            <a href="{% url 'order:delivered_orders' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
-                                ดูคำสั่งซื้อที่จัดส่งสำเร็จ
-                            </a>
-                            {% elif order.status in 'PROCESSING,SHIPPED' and order.payment_status == 'COMPLETED' %}
-                            <a href="{% url 'order:order_detail' order_id=order.id %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
-                                ดูรายละเอียด
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
+        <div class="space-y-4">
+            {% if orders %}
+            {% for order in orders %}
+            <div class="bg-white rounded-md shadow-sm p-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-semibold text-gray-800">คำสั่งซื้อ #{{ order.id }}</h3>
+                    <span class="text-sm font-medium text-gray-600">{{ order.created_at|date:"d/m/Y H:i" }}</span>
                 </div>
-                {% endfor %}
-                {% else %}
-                <p class="text-center text-gray-600">ไม่มีคำสั่งซื้อในขณะนี้</p>
-                {% endif %}
+                <p class="text-sm text-gray-500">สถานะ: <span class="font-semibold">{{ order.get_status_display }}</span></p>
+                <p class="text-sm text-gray-500">ชำระเงิน: <span class="font-semibold">{{ order.get_payment_status_display }}</span></p>
+                <p class="text-sm text-gray-500">ยอดรวม: <span class="font-semibold text-green-600">{{ order.total_price }} บาท</span></p>
+                <div class="mt-4 flex space-x-2">
+                    {% if order.status == 'PENDING' and order.payment_status == 'PENDING' %}
+                    <a href="{% url 'order:payment' order_id=order.id %}"
+                       class="inline-block py-2 px-4 text-sm font-semibold text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200">
+                        ชำระเงิน
+                    </a>
+                    <a href="{% url 'order:cancel_order' order_id=order.id %}"
+                       class="inline-block py-2 px-4 text-sm font-semibold text-red-500 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200">
+                        ยกเลิก
+                    </a>
+                    {% elif order.status == 'DELIVERED' %}
+                    <a href="{% url 'order:delivered_orders' %}"
+                       class="inline-block py-2 px-4 text-sm font-semibold text-blue-500 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                        ดูรายละเอียด
+                    </a>
+                    {% elif order.status in 'PROCESSING,SHIPPED' and order.payment_status == 'COMPLETED' %}
+                    <a href="{% url 'order:order_detail' order_id=order.id %}"
+                       class="inline-block py-2 px-4 text-sm font-semibold text-indigo-500 bg-indigo-100 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                        ดูรายละเอียด
+                    </a>
+                    {% endif %}
+                </div>
             </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center text-gray-600">ไม่มีคำสั่งซื้อในขณะนี้</p>
+            {% endif %}
+        </div>
 
-            <!-- Actions -->
-            <div class="text-center">
-                <a href="{% url 'home' %}" class="inline-block text-green-600 hover:text-green-700 font-medium">
-                    กลับไปหน้าหลัก
-                </a>
-            </div>
+        <div class="mt-8 text-center">
+            <a href="{% url 'home' %}" class="text-green-600 hover:text-green-700 font-medium transition duration-200">
+                กลับไปหน้าหลัก
+            </a>
         </div>
     </div>
 </div>

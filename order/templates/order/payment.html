@@ -4,82 +4,77 @@
 {% block title %}ชำระเงิน{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-6xl mx-auto">
-        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-            <!-- Filter Buttons -->
-            <div class="flex justify-center space-x-4 mb-8">
-                <a href="{% url 'order:order_status' %}?filter=unpaid"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-green-700">
-                    ยังไม่ได้ชำระ
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=shipping"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-blue-600 hover:bg-blue-700">
-                    กำลังจัดส่ง
-                </a>
-                <a href="{% url 'order:order_status' %}?filter=delivered"
-                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-teal-600 hover:bg-teal-700">
-                    เสร็จสิ้น
-                </a>
-            </div>
-
-            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
-                ชำระเงินคำสั่งซื้อ #{{ order.id }}
-            </h2>
-
-            <!-- Instructions -->
-            <div class="mb-12 text-center">
-                <p class="text-lg text-gray-600 mb-4">กรุณาสแกน QR Code ด้านล่างด้วยแอปธนาคารของคุณเพื่อชำระเงิน</p>
-                <p class="text-sm text-gray-500">ยอดชำระ: <span class="font-semibold text-green-600">{{ order.total_price }} บาท</span></p>
-            </div>
-
-            <!-- QR Code -->
-            <div class="flex justify-center mb-12">
-                {% if order.qr_code %}
-                <img src="{{ order.qr_code.url }}" alt="PromptPay QR Code" class="max-w-xs w-full rounded-lg shadow-md">
-                {% else %}
-                <p class="text-red-600">ไม่สามารถสร้าง QR Code ได้ กรุณาติดต่อฝ่ายสนับสนุน</p>
-                {% endif %}
-            </div>
-
-            <!-- Order Summary -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">สรุปคำสั่งซื้อ</h3>
-                <div class="bg-white rounded-2xl shadow-md p-6">
-                    {% for item in order.items.all %}
-                    <div class="flex justify-between items-center py-3 border-b last:border-b-0">
-                        <div>
-                            <p class="text-lg font-medium text-grayDIGITAL 900">{{ item.product.name }}</p>
-                            {% if item.option %}
-                            <p class="text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
-                            {% endif %}
-                            <p class="text-sm text-gray-500">จำนวน: {{ item.quantity }}</p>
-                        </div>
-                        <p class="text-lg font-semibold text-gray-900">{{ item.price|floatformat:2 }} บาท</p>
-                    </div>
-                    {% endfor %}
-                    <div class="flex justify-between items-center pt-4">
-                        <p class="text-xl font-semibold text-gray-800">ยอดรวม:</p>
-                        <p class="text-xl font-bold text-green-600">{{ order.total_price }} บาท</p>
-                    </div>
+<div class="min-h-screen bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="md:grid md:grid-cols-2 gap-8 p-8">
+            <div class="md:col-span-1">
+                <div class="flex justify-center space-x-4 mb-8">
+                    <a href="{% url 'order:order_status' %}?filter=unpaid"
+                       class="inline-block px-4 py-2 text-sm font-semibold text-green-600 bg-green-100 rounded-full hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200">
+                        ยังไม่ได้ชำระ
+                    </a>
+                    <a href="{% url 'order:order_status' %}?filter=shipping"
+                       class="inline-block px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                        กำลังจัดส่ง
+                    </a>
+                    <a href="{% url 'order:order_status' %}?filter=delivered"
+                       class="inline-block px-4 py-2 text-sm font-semibold text-teal-600 bg-teal-100 rounded-full hover:bg-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200">
+                        เสร็จสิ้น
+                    </a>
                 </div>
-            </div>
 
-            <!-- Actions -->
-            <div class="text-center">
-                <p class="text-sm text-gray-500 mb-4">หลังจากชำระเงินแล้ว กรุณาคลิกปุ่มด้านล่างเพื่อยืนยัน</p>
-                <form method="post" action="{% url 'order:confirm_payment' order_id=order.id %}">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center md:text-left">
+                    ชำระเงินคำสั่งซื้อ #{{ order.id }}
+                </h2>
+
+                <p class="text-center md:text-left text-gray-600 mb-6">
+                    สแกน QR Code ด้านล่างเพื่อชำระเงิน<br>
+                    <span class="font-semibold text-green-600">{{ order.total_price }} บาท</span>
+                </p>
+
+                <div class="flex justify-center mb-8 rounded-md shadow-sm overflow-hidden hover:shadow-lg transition duration-300">
+                    {% if order.qr_code %}
+                    <img src="{{ order.qr_code.url }}" alt="PromptPay QR Code" class="max-w-md w-full">
+                    {% else %}
+                    <p class="text-red-500 text-center">ไม่สามารถสร้าง QR Code ได้</p>
+                    {% endif %}
+                </div>
+
+                <form method="post" action="{% url 'order:confirm_payment' order_id=order.id %}" class="text-center md:text-left">
                     {% csrf_token %}
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
+                    <button type="submit"
+                            class="inline-block py-3 px-8 font-semibold text-white bg-green-500 rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200">
                         ยืนยันการชำระเงิน
                     </button>
                 </form>
-                <div class="mt-4 space-x-4">
-                
-                    <a href="{% url 'home' %}" class="inline-block text-green-600 hover:text-green-700 font-medium">
+
+                <div class="mt-6 text-center md:text-left">
+                    <a href="{% url 'home' %}" class="text-green-600 hover:text-green-700 font-medium transition duration-200">
                         กลับไปหน้าหลัก
                     </a>
                 </div>
+            </div>
+
+            <div class="md:col-span-1 bg-gray-50 p-8 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">สรุปคำสั่งซื้อ</h3>
+                <ul class="divide-y divide-gray-200">
+                    {% for item in order.items.all %}
+                    <li class="py-3 flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">{{ item.product.name }}</p>
+                            {% if item.option %}
+                            <p class="text-xs text-gray-500">{{ item.option.name }}</p>
+                            {% endif %}
+                            <p class="text-xs text-gray-500">จำนวน: {{ item.quantity }}</p>
+                        </div>
+                        <span class="font-semibold text-gray-700">{{ item.price|floatformat:2 }} บาท</span>
+                    </li>
+                    {% endfor %}
+                    <li class="py-3 flex items-center justify-between font-semibold text-gray-800">
+                        <span>ยอดรวม</span>
+                        <span>{{ order.total_price }} บาท</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
