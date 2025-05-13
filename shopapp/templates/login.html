@@ -1,50 +1,46 @@
-<!-- templates/login.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-  <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Login</h1>
+{% extends "base2.html" %}
+{% load static %}
 
-    <!-- ปุ่ม Login ด้วย Google -->
-    <a href="{% url 'social:begin' 'google-oauth2' %}?next=/"
-       class="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md shadow-md w-full transition duration-300">
-      <svg class="w-5 h-5" viewBox="0 0 48 48">
-        <path fill="#fbc02d" d="M43.6 20.5H42V20H24v8h11.3c-1.5 4.3-5.6 7.5-10.6 7.5C18 35.5 13 30.5 13 24s5-11.5 11.5-11.5c2.9 0 5.6 1.1 7.6 3l5.7-5.7C34 6.3 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.9 0 20-8.9 20-20 0-1.2-.1-2.3-.4-3.5z"/>
-        <path fill="#e53935" d="M6.3 14.7l6.6 4.8C14.3 16.1 18.8 13 24 13c2.9 0 5.6 1.1 7.6 3l5.7-5.7C34 6.3 29.3 4 24 4c-7.5 0-14 4.1-17.7 10.2z"/>
-        <path fill="#4caf50" d="M24 44c5.2 0 10-2 13.6-5.3l-6.3-5.2c-2 1.5-4.5 2.5-7.3 2.5-4.9 0-9-3.2-10.5-7.5l-6.6 5.1C9.8 39.6 16.4 44 24 44z"/>
-        <path fill="#1565c0" d="M43.6 20.5H42V20H24v8h11.3c-.9 2.5-2.5 4.6-4.7 6.1l6.3 5.2C40.7 36.1 44 30.6 44 24c0-1.2-.1-2.3-.4-3.5z"/>
-      </svg>
-      <span>Login with Google</span>
-    </a>
+{% block body_class %}home-page{% endblock %}
+{% block header_class %}sticky-header{% endblock %}
 
-    <!-- ช่อง Login แบบ email/password -->
-    <form method="post" action="{% url 'login' %}" class="space-y-4 mt-6">
-      {% csrf_token %}
-      <input type="text" name="username" placeholder="Username"
-             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-      <input type="password" name="password" placeholder="Password"
-             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-      <button type="submit"
-              class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-300">
-        Login with Email
-      </button>
-    </form>
+{% block content %}
+<div class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+        <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Login</h1>
 
-    <!-- ลิงก์ไปหน้าสมัครสมาชิก -->
-    <p class="text-center text-sm text-gray-600 mt-4">
-      ยังไม่มีบัญชี? 
-      <a href="{% url 'signup' %}" class="text-blue-500 hover:underline">สมัครสมาชิก</a>
-    </p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/"
+           class="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md shadow-md w-full transition duration-300">
+            <svg class="w-5 h-5" viewBox="0 0 48 48">
+                <path fill="#fbc02d" d="M43.6 20.5H42V20H24v8h11.3c-1.5 4.3-5.6 7.5-10.6 7.5C18 35.5 13 30.5 13 24s5-11.5 11.5-11.5c2.9 0 5.6 1.1 7.6 3l5.7-5.7C34 6.3 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.9 0 20-8.9 20-20 0-1.2-.1-2.3-.4-3.5z"/>
+                <path fill="#e53935" d="M6.3 14.7l6.6 4.8C14.3 16.1 18.8 13 24 13c2.9 0 5.6 1.1 7.6 3l5.7-5.7C34 6.3 29.3 4 24 4c-7.5 0-14 4.1-17.7 10.2z"/>
+                <path fill="#4caf50" d="M24 44c5.2 0 10-2 13.6-5.3l-6.3-5.2c-2 1.5-4.5 2.5-7.3 2.5-4.9 0-9-3.2-10.5-7.5l-6.6 5.1C9.8 39.6 16.4 44 24 44z"/>
+                <path fill="#1565c0" d="M43.6 20.5H42V20H24v8h11.3c-.9 2.5-2.5 4.6-4.7 6.1l6.3 5.2C40.7 36.1 44 30.6 44 24c0-1.2-.1-2.3-.4-3.5z"/>
+            </svg>
+            <span>Login with Google</span>
+        </a>
+
+        <form method="post" action="{% url 'login' %}" class="space-y-4 mt-6">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            <input type="password" name="password" placeholder="Password"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            <button type="submit"
+                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-300">
+                Login with Email
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-600 mt-4">
+            ยังไม่มีบัญชี?
+            <a href="{% url 'signup' %}" class="text-blue-500 hover:underline">สมัครสมาชิก</a>
+        </p>
 
 
-    <p class="text-center text-sm text-gray-600 mt-2">
-      <a href="{% url 'password_reset' %}" class="text-blue-500 hover:underline">ลืมรหัสผ่าน?</a>
-    </p>
-  </div>
-</body>
-</html>
+        <p class="text-center text-sm text-gray-600 mt-2">
+            <a href="{% url 'password_reset' %}" class="text-blue-500 hover:underline">ลืมรหัสผ่าน?</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
