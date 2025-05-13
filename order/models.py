@@ -30,29 +30,27 @@ class Address(models.Model):
         super().save(*args, **kwargs)
 
 class Order(models.Model):
-    STATUS_CHOICES = [
+    STATUS_CHOICES = (
         ('PENDING', 'รอดำเนินการ'),
         ('PROCESSING', 'กำลังดำเนินการ'),
         ('SHIPPED', 'จัดส่งแล้ว'),
-        ('DELIVERED', 'ส่งถึงแล้ว'),
-        ('CANCELLED', 'ยกเลิก'),
-    ]
-
-    PAYMENT_STATUS_CHOICES = [
-        ('PENDING', 'รอการชำระเงิน'),
+        ('DELIVERED', 'จัดส่งสำเร็จ'),
+        ('CANCELLED', 'ยกเลิก'),  # Added CANCELLED status
+    )
+    PAYMENT_STATUS_CHOICES = (
+        ('PENDING', 'รอชำระเงิน'),
         ('COMPLETED', 'ชำระเงินแล้ว'),
-        ('FAILED', 'การชำระเงินล้มเหลว'),
-    ]
+    )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    total_carbon_reduction = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_carbon_reduction = models.FloatField(default=0.0)
+    promptpay_id = models.CharField(max_length=20, blank=True)
+    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING')
-    promptpay_id = models.CharField(max_length=13, blank=True, null=True)  # หมายเลขโทรศัพท์หรือเลขบัตรประชาชน
-    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True)  # เก็บ QR Code
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

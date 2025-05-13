@@ -157,3 +157,14 @@ def confirm_payment(request, order_id):
 def delivered_orders(request):
     delivered_orders = Order.objects.filter(user=request.user, status='DELIVERED').order_by('-created_at')
     return render(request, 'order/delivered_orders.html', {'delivered_orders': delivered_orders})
+
+@login_required
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    if order.status == 'PENDING' and order.payment_status == 'PENDING':
+        order.status = 'CANCELLED'
+        order.save()
+        messages.success(request, f"ยกเลิกคำสั่งซื้อ #{order.id} เรียบร้อยแล้ว")
+    else:
+        messages.error(request, "ไม่สามารถยกเลิกคำสั่งซื้อนี้ได้")
+    return redirect('order:order_status')
