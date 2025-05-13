@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'cart',
     'order',
     'blog', 
+    'share_knowledge',  
+
 ]
 PROMPTPAY_ID = os.getenv('PROMPTPAY_ID')  
 

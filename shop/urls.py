@@ -12,6 +12,8 @@ urlpatterns = [
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     path('order/', include('order.urls')),
     path('blog/', include('blog.urls')),  # Include the blog app's URLs
+    path('share/', include('share_knowledge.urls')),  # เพิ่มบรรทัดนี้
+
 
 
 ]
