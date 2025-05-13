@@ -7,6 +7,23 @@
 <div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto">
         <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+            <!-- Overall Order Progress Display -->
+<div class="bg-teal-50 border-l-4 border-teal-500 text-teal-800 p-4 mb-8 rounded-xl">
+    {% if order.payment_status != 'COMPLETED' %}
+        <p class="text-xl font-bold">ออร์เดอร์นี้ยังไม่ได้ชำระเงิน</p>
+        <p class="text-sm">กรุณาชำระเงินเพื่อดำเนินการต่อ</p>
+    {% elif order.status == 'PROCESSING' or order.status == 'SHIPPED' %}
+        <p class="text-xl font-bold">สินค้าของคุณกำลังจัดส่ง</p>
+        <p class="text-sm">โปรดรอรับสินค้าภายในเวลาที่กำหนด</p>
+    {% elif order.status == 'DELIVERED' %}
+        <p class="text-xl font-bold">ออร์เดอร์นี้จัดส่งเรียบร้อยแล้ว</p>
+        <p class="text-sm">ขอบคุณที่ใช้บริการของเรา</p>
+    {% elif order.status == 'CANCELLED' %}
+        <p class="text-xl font-bold text-red-600">ออร์เดอร์นี้ถูกยกเลิก</p>
+    {% else %}
+        <p class="text-xl font-bold">ออร์เดอร์อยู่ระหว่างดำเนินการ</p>
+    {% endif %}
+</div>  
             <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
                 สถานะคำสั่งซื้อ #{{ order.id }}
             </h2>

@@ -8,7 +8,6 @@ import qrcode
 from django.core.files.base import ContentFile
 from io import BytesIO
 from django.conf import settings
-import os
 
 @login_required
 def checkout(request):
@@ -52,7 +51,7 @@ def checkout(request):
                 is_default=not addresses.exists()
             )
 
-        # สร้างคำสั่งซื้อ
+        # Create order
         order = Order.objects.create(
             user=request.user,
             cart=cart,
@@ -60,10 +59,11 @@ def checkout(request):
             total_price=cart.total_price(),
             total_carbon_reduction=cart.total_carbon_reduction(),
             promptpay_id=settings.PROMPTPAY_ID,
+            status='PENDING',
             payment_status='PENDING',
         )
 
-        # สร้าง OrderItems จาก CartItems
+        # Create OrderItems from CartItems
         for item in cart.items.all():
             OrderItem.objects.create(
                 order=order,
@@ -73,23 +73,20 @@ def checkout(request):
                 price=item.total_price() / item.quantity,
             )
 
-        # สร้าง QR Code สำหรับ PromptPay
+        # Generate QR Code for PromptPay
         try:
-            # ใช้ฟังก์ชัน qr_code จาก pypromptpay
             payload = qr_code(
                 account=settings.PROMPTPAY_ID,
                 one_time=True,
                 country="TH",
-                money=str(order.total_price),  # แปลงเป็น string ตามเอกสาร
+                money=str(order.total_price),
                 currency="THB"
             )
-            # สร้าง QR Code จาก payload
             qr = qrcode.QRCode(version=1, box_size=10, border=4)
             qr.add_data(payload)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
 
-            # บันทึก QR Code
             buffer = BytesIO()
             img.save(buffer, format="PNG")
             file_name = f"order_{order.id}_qrcode.png"
@@ -97,9 +94,10 @@ def checkout(request):
             order.save()
         except Exception as e:
             messages.error(request, f"ไม่สามารถสร้าง QR Code ได้: {str(e)}")
+            order.delete()  # Delete the order if QR code generation fails
             return redirect('cart:view_cart')
 
-        # ล้างตะกร้า
+        # Clear cart
         cart.items.all().delete()
         messages.success(request, "สั่งซื้อสำเร็จ! กรุณาชำระเงินโดยสแกน QR Code")
         return redirect('order:payment', order_id=order.id)
@@ -112,21 +110,42 @@ def checkout(request):
 @login_required
 def payment(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
+    # Ensure order is in PENDING status
+    if order.status != 'PENDING' or order.payment_status != 'PENDING':
+        order.status = 'PENDING'
+        order.payment_status = 'PENDING'
+        order.save()
     return render(request, 'order/payment.html', {'order': order})
 
 @login_required
-def order_status(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, 'order/status.html', {'order': order})
+def order_status(request):
+    filter_param = request.GET.get('filter', 'all')
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+
+    if filter_param == 'unpaid':
+        orders = orders.filter(status='PENDING', payment_status='PENDING')
+    elif filter_param == 'shipping':
+        orders = orders.filter(status__in=['PROCESSING', 'SHIPPED'], payment_status='COMPLETED')
+    elif filter_param == 'delivered':
+        orders = orders.filter(status='DELIVERED')
+
+    return render(request, 'order/order_status.html', {
+        'orders': orders,
+        'filter': filter_param
+    })
 
 @login_required
 def confirm_payment(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     if request.method == 'POST':
-        # จำลองการยืนยันการชำระเงิน (แทนด้วย API ในอนาคต)
         order.payment_status = 'COMPLETED'
         order.status = 'PROCESSING'
         order.save()
         messages.success(request, "ยืนยันการชำระเงินเรียบร้อยแล้ว")
-        return redirect('order:order_status', order_id=order.id)
-    return redirect('order:order_status', order_id=order.id)
+        return redirect('order:order_status')
+    return redirect('order:payment', order_id=order.id)
+
+@login_required
+def delivered_orders(request):
+    delivered_orders = Order.objects.filter(user=request.user, status='DELIVERED').order_by('-created_at')
+    return render(request, 'order/delivered_orders.html', {'delivered_orders': delivered_orders})

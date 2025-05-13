@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}สถานะคำสั่งซื้อ{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
+                สถานะคำสั่งซื้อ
+            </h2>
+
+            <!-- Filter Buttons -->
+            <div class="flex justify-center space-x-4 mb-8">
+                <a href="{% url 'order:order_status' %}?filter=unpaid"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
+                          {% if filter == 'unpaid' %}bg-green-700{% else %}bg-green-600 hover:bg-green-700{% endif %}">
+                    ยังไม่ได้ชำระ
+                </a>
+                <a href="{% url 'order:order_status' %}?filter=shipping"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
+                          {% if filter == 'shipping' %}bg-blue-700{% else %}bg-blue-600 hover:bg-blue-700{% endif %}">
+                    กำลังจัดส่ง
+                </a>
+                <a href="{% url 'order:order_status' %}?filter=delivered"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200
+                          {% if filter == 'delivered' %}bg-teal-700{% else %}bg-teal-600 hover:bg-teal-700{% endif %}">
+                    เสร็จสิ้น
+                </a>
+            </div>
+
+            <!-- Order List -->
+            <div class="mb-12">
+                {% if orders %}
+                {% for order in orders %}
+                <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xl font-semibold text-gray-900">คำสั่งซื้อ #{{ order.id }}</p>
+                            <p class="text-sm text-gray-500">สถานะ: {{ order.get_status_display }}</p>
+                            <p class="text-sm text-gray-500">สถานะการชำระเงิน: {{ order.get_payment_status_display }}</p>
+                            <p class="text-sm text-gray-500">ยอดรวม: {{ order.total_price }} บาท</p>
+                        </div>
+                        <div>
+                            {% if order.status == 'PENDING' and order.payment_status == 'PENDING' %}
+                            <a href="{% url 'order:payment' order_id=order.id %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
+                                ชำระเงิน
+                            </a>
+                            {% elif order.status == 'DELIVERED' %}
+                            <a href="{% url 'order:delivered_orders' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
+                                ดูคำสั่งซื้อที่จัดส่งสำเร็จ
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-center text-gray-600">ไม่มีคำสั่งซื้อในขณะนี้</p>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="text-center">
+                <a href="{% url 'home' %}" class="inline-block text-green-600 hover:text-green-700 font-medium">
+                    กลับไปหน้าหลัก
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
