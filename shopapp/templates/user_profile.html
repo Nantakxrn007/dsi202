@@ -9,12 +9,16 @@
     <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
       <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-6 sm:space-y-0 sm:space-x-6">
         <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600">
+          {% if user.profile.profile_picture %}
+          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-full h-full rounded-full object-cover">
+          {% else %}
           {{ user.first_name|default:"U"|slice:":1" }}{{ user.last_name|default:"P"|slice:":1" }}
+          {% endif %}
         </div>
         <div class="text-center sm:text-left">
           <h2 class="text-2xl font-bold text-gray-800">{{ user.get_full_name|default:user.username }}</h2>
           <p class="text-gray-600">{{ user.email }}</p>
-          <a href="#" class="text-sm text-blue-600 hover:underline">แก้ไขโปรไฟล์</a>
+          <a href="{% url 'edit_profile' %}" class="text-sm text-blue-600 hover:underline">แก้ไขโปรไฟล์</a>
           <form action="{% url 'logout' %}" method="post" class="mt-4">
             {% csrf_token %}
             <button type="submit"

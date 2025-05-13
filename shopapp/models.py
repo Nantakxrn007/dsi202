@@ -1,5 +1,6 @@
 # shopapp/models.py
 from django.db import models
+from django.contrib.auth.models import User
 
 class Product(models.Model):
     # Define category choices
@@ -42,3 +43,17 @@ class SaleInformation(models.Model):
 
     def __str__(self):
         return f"Sale Info for {self.product.name} (ID: {self.id})"
+    
+
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"

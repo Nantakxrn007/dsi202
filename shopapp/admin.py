@@ -1,6 +1,6 @@
 # shopapp/admin.py
 from django.contrib import admin
-from .models import Product, ProductOption, SaleInformation
+from .models import Product, ProductOption, SaleInformation , Profile
 
 class ProductOptionInline(admin.TabularInline):
     model = ProductOption
@@ -33,3 +33,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(ProductOption)
 admin.site.register(SaleInformation)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'profile_picture')
+    search_fields = ('user__username',)

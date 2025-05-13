@@ -10,6 +10,8 @@ from .forms import CustomUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
 from cart.views import get_cart
 from order.models import Order
+from django.contrib import messages
+from .models import Profile
 
 class HomePageView(ListView):
     model = Product
@@ -67,9 +69,10 @@ def signup_view(request):
         form = CustomUserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
+
+
 @login_required
 def user_profile(request):
-    # Fetch order counts for summary
     unpaid_count = Order.objects.filter(
         user=request.user, status='PENDING', payment_status='PENDING'
     ).count()
@@ -85,4 +88,26 @@ def user_profile(request):
         'unpaid_count': unpaid_count,
         'shipping_count': shipping_count,
         'delivered_count': delivered_count
+    })
+
+
+@login_required
+def edit_profile(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        request.user.first_name = request.POST.get('first_name', request.user.first_name)
+        request.user.last_name = request.POST.get('last_name', request.user.last_name)
+        request.user.email = request.POST.get('email', request.user.email)
+        request.user.save()
+
+        if 'profile_picture' in request.FILES:
+            profile.profile_picture = request.FILES['profile_picture']
+            profile.save()
+
+        messages.success(request, "บันทึกการเปลี่ยนแปลงโปรไฟล์เรียบร้อยแล้ว")
+        return redirect('profile')
+
+    return render(request, 'edit_profile.html', {
+        'user': request.user
     })
