@@ -33,12 +33,15 @@
         <div class="text-3xl font-bold tracking-tight animate-on-load">
             <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">🌱 Treeveq</a>
         </div>
-        <div class="flex items-center space-x-4 mt-3 md:mt-0 flex-grow justify-end">
-            <form method="get" action="{% url 'home' %}" class="relative flex items-center animate-on-load w-full max-w-[600px]">
+        <div class="flex items-center space-x-6 mt-3 md:mt-0 flex-grow justify-end">
+            <a href="{% url 'blog_home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale">
+                Blog
+            </a>
+            <form method="get" action="{% url 'home' %}" class="relative flex items-center animate-on-load w-full max-w-[400px]">
                 <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}"
-                       class="px-6 py-3 pr-12 w-full rounded-full bg-white bg-opacity-90 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition hover:scale-[1.02] placeholder:text-gray-500 placeholder:opacity-80 text-sm">
+                       class="px-4 py-2 pr-10 w-full rounded-full bg-white bg-opacity-90 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition hover:scale-[1.02] placeholder:text-gray-500 placeholder:opacity-80 text-sm">
                 <button type="submit"
-                        class="absolute right-1 w-10 h-10 rounded-full bg-gradient-to-br from-green-600 to-green-500 text-white flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-opacity-40 search-button"
+                        class="absolute right-1 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-gradient-to-br from-green-600 to-green-500 text-white flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-opacity-40 search-button"
                         title="ค้นหา">
                     🔍
                 </button>
@@ -48,12 +51,12 @@
             </a>
             {% if user.is_authenticated %}
             <a href="{% url 'user_profile' %}"
-               class="text-sm bg-white bg-opacity-20 border border-white px-4 py-2 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale">
+               class="text-sm bg-white bg-opacity-20 border border-white px-3 py-1.5 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale">
                 โปรไฟล์
             </a>
             {% else %}
             <a href="{% url 'login' %}"
-               class="text-sm bg-yellow-300 px-4 py-2 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale">
+               class="text-sm bg-yellow-300 px-3 py-1.5 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale">
                 เข้าสู่ระบบ
             </a>
             {% endif %}
