@@ -11,6 +11,7 @@ urlpatterns = [
     path('auth/', include('social_django.urls', namespace='social')),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     path('order/', include('order.urls')),
+    path('blog/', include('blog.urls')),  # Include the blog app's URLs
 
 
 ]

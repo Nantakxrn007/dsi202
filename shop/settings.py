@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'social_django',   
     'cart',
     'order',
-
+    'blog', 
 ]
 PROMPTPAY_ID = os.getenv('PROMPTPAY_ID')  
 
@@ -160,6 +160,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'shopapp/static'),
+    os.path.join(BASE_DIR, 'blog/static'),
 ]
 
 # Default primary key field type

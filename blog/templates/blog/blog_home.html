@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="py-12 bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div class="bg-white shadow-2xl rounded-3xl p-8 max-w-7xl mx-auto transform transition-all duration-500 hover:shadow-3xl">
+        <h1 class="text-3xl font-bold text-center text-green-600 mb-8">เรื่องราวรักษ์โลกและสินค้าเพื่อความยั่งยืน</h1>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">โลกกำลังเผชิญกับอะไร?</h2>
+            <div class="grid grid-cols-1 gap-8">
+                {% for content in blog_contents %}
+                    <div class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                        {% if content.video_file %}
+                            <video class="w-full rounded-t-xl mb-4" controls>
+                                <source src="{{ content.video_file.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% elif content.video_url %}
+                            <iframe class="w-full aspect-video rounded-t-xl mb-4" src="{{ content.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        {% elif content.image %}
+                            <img src="{{ content.image.url }}" alt="{{ content.title }}" class="w-full object-cover rounded-t-xl mb-4" style="max-height: 600px;">
+                        {% endif %}
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ content.title }}</h3>
+                            <p class="text-gray-600 leading-relaxed">{{ content.content }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500">ไม่มีข้อมูลเกี่ยวกับปัญหาสิ่งแวดล้อมในขณะนี้</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">แค่คุณเลือกใช้สินค้าที่รักโลก ก็ช่วยโลกได้แล้ว</h2>
+            <div class="rounded-xl overflow-hidden shadow-md">
+                <img src="{% static 'images/abc.jpg' %}" alt="สินค้าที่รักโลก" class="w-full object-cover" style="max-height: 400px;">
+                <div class="p-6 bg-gray-100">
+                    <h3 class="text-xl font-semibold text-green-600 mb-2">เริ่มต้นง่ายๆ ด้วยกระเป๋าผ้า</h3>
+                    <p class="text-gray-700 leading-relaxed">รู้หรือไม่ว่าถุงพลาสติกที่เราใช้กันอยู่ทุกวัน ใช้เวลาย่อยสลายนานหลายร้อยปี และเป็นสาเหตุสำคัญของปัญหามลพิษทางทะเล การเปลี่ยนมาใช้ถุงผ้าแทนถุงพลาสติกจึงเป็นทางเลือกที่ช่วยลดปริมาณขยะและผลกระทบต่อสิ่งแวดล้อมได้อย่างมาก</p>
+                    <ul class="list-disc pl-5 mt-4 text-gray-600">
+                        <li>**ลดขยะพลาสติก:** ช่วยลดปริมาณขยะที่ไม่สามารถย่อยสลายได้</li>
+                        <li>**ใช้งานได้นาน:** ถุงผ้ามีความทนทานและสามารถซักเพื่อนำกลับมาใช้ใหม่ได้หลายครั้ง</li>
+                        <li>**เป็นมิตรต่อสิ่งแวดล้อม:** ลดการใช้ทรัพยากรในการผลิตถุงพลาสติก</li>
+                        <li>**หลากหลายสไตล์:** มีถุงผ้าให้เลือกมากมายหลายแบบ หลายขนาด เหมาะกับทุกไลฟ์สไตล์</li>
+                    </ul>
+                    <p class="mt-4 text-gray-700 leading-relaxed">มาร่วมเป็นส่วนหนึ่งของการรักษ์โลกด้วยการเลือกใช้กระเป๋าผ้ากันเถอะ!</p>
+                    <a href="{% url 'home' %}" class="inline-block mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">เลือกดูกระเป๋าผ้ารักษ์โลกของเรา</a>
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+</div>
+{% endblock %}
