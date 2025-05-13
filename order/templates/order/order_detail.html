@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}รายละเอียดคำสั่งซื้อ{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+            <!-- Filter Buttons -->
+            <div class="flex justify-center space-x-4 mb-8">
+                <a href="{% url 'order:order_status' %}?filter=unpaid"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-green-600 hover:bg-green-700">
+                    ยังไม่ได้ชำระ
+                </a>
+                <a href="{% url 'order:order_status' %}?filter=shipping"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-blue-700">
+                    กำลังจัดส่ง
+                </a>
+                <a href="{% url 'order:order_status' %}?filter=delivered"
+                   class="px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-200 bg-teal-600 hover:bg-teal-700">
+                    เสร็จสิ้น
+                </a>
+            </div>
+
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
+                รายละเอียดคำสั่งซื้อ #{{ order.id }}
+            </h2>
+
+            <!-- Order Summary -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">สรุปคำสั่งซื้อ</h3>
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    {% for item in order.items.all %}
+                    <div class="flex justify-between items-center py-3 border-b last:border-b-0">
+                        <div>
+                            <p class="text-lg font-medium text-gray-900">{{ item.product.name }}</p>
+                            {% if item.option %}
+                            <p class="text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
+                            {% endif %}
+                            <p class="text-sm text-gray-500">จำนวน: {{ item.quantity }}</p>
+                        </div>
+                        <p class="text-lg font-semibold text-gray-900">{{ item.price|floatformat:2 }} บาท</p>
+                    </div>
+                    {% endfor %}
+                    <div class="flex justify-between items-center pt-4">
+                        <p class="text-xl font-semibold text-gray-800">ยอดรวม:</p>
+                        <p class="text-xl font-bold text-green-600">{{ order.total_price }} บาท</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">ข้อมูลคำสั่งซื้อ</h3>
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <p class="text-lg text-gray-700"><span class="font-semibold">สถานะ:</span> {{ order.get_status_display }}</p>
+                    <p class="text-lg text-gray-700"><span class="font-semibold">สถานะการชำระเงิน:</span> {{ order.get_payment_status_display }}</p>
+                    <p class="text-lg text-gray-700"><span class="font-semibold">วันที่สั่งซื้อ:</span> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+                    <p class="text-lg text-gray-700"><span class="font-semibold">ลดคาร์บอน:</span> {{ order.total_carbon_reduction }} กก.</p>
+                </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">ที่อยู่จัดส่ง</h3>
+                <div class="bg-white rounded-2xl shadow-md p-6">
+                    <p class="text-lg text-gray-700"><span class="font-semibold">ชื่อผู้รับ:</span> {{ order.address.full_name }}</p>
+                    <p class="text-lg text-gray-700"><span class="font-semibold">ที่อยู่:</span> {{ order.address.address_detail }}, {{ order.address.sub_district }}, {{ order.address.district }}, {{ order.address.province }}, {{ order.address.postal_code }}</p>
+                    <p class="text-lg text-gray-700"><span class="font-semibold">เบอร์โทร:</span> {{ order.address.phone_number }}</p>
+                    {% if order.address.note %}
+                    <p class="text-lg text-gray-700"><span class="font-semibold">หมายเหตุ:</span> {{ order.address.note }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="text-center">
+                
+                <a href="{% url 'home' %}" class="inline-block text-green-600 hover:text-green-700 font-medium ml-4">
+                    กลับไปหน้าหลัก
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

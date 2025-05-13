@@ -1,41 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}My Profile{% endblock %}
+{% block title %}โปรไฟล์ของฉัน{% endblock %}
+
 {% block content %}
-<div class="max-w-4xl mx-auto py-12 px-4">
-  <div class="bg-white rounded-xl shadow p-6">
-    <div class="flex items-center space-x-4">
-      <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600">
-        {{ user.first_name|default:"U" }}{{ user.last_name|default:"P" }}
-      </div>
-      <div>
-        <h2 class="text-xl font-bold text-gray-800">{{ user.get_full_name|default:user.username }}</h2>
-        <p class="text-gray-600">{{ user.email }}</p>
-        <a href="#" class="text-sm text-blue-600 hover:underline">Edit Profile</a>
-
-        <form action="{% url 'logout' %}" method="post" class="mt-4">
-          {% csrf_token %}
-          <button type="submit"
-            class="text-sm text-red-600 hover:underline bg-red-100 px-3 py-1 rounded-md hover:bg-red-200 transition">
-            Logout
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <div class="mt-8">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Order History</h3>
-      <div class="space-y-3">
-        <!-- ตัวอย่างคำสั่งซื้อ -->
-        <div class="p-4 bg-gray-50 rounded-md shadow flex justify-between items-center">
-          <div>
-            <p class="font-semibold">Order #12345</p>
-            <p class="text-sm text-gray-500">Date: 2025-05-01</p>
-            <p class="text-sm text-gray-500">Total: $150</p>
-          </div>
-          <a href="#" class="text-sm text-blue-600 hover:underline">View Details</a>
+<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-6 sm:space-y-0 sm:space-x-6">
+        <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600">
+          {{ user.first_name|default:"U"|slice:":1" }}{{ user.last_name|default:"P"|slice:":1" }}
         </div>
+        <div class="text-center sm:text-left">
+          <h2 class="text-2xl font-bold text-gray-800">{{ user.get_full_name|default:user.username }}</h2>
+          <p class="text-gray-600">{{ user.email }}</p>
+          <a href="#" class="text-sm text-blue-600 hover:underline">แก้ไขโปรไฟล์</a>
+          <form action="{% url 'logout' %}" method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit"
+              class="text-sm text-red-600 hover:underline bg-red-100 px-3 py-1 rounded-md hover:bg-red-200 transition">
+              ออกจากระบบ
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="mt-12">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-6">สรุปคำสั่งซื้อ</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a href="{% url 'order:order_status' %}?filter=unpaid"
+             class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition">
+            <p class="text-lg font-semibold text-gray-900">ยังไม่ได้ชำระ</p>
+            <p class="text-2xl font-bold text-green-600">{{ unpaid_count }}</p>
+          </a>
+          <a href="{% url 'order:order_status' %}?filter=shipping"
+             class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition">
+            <p class="text-lg font-semibold text-gray-900">กำลังจัดส่ง</p>
+            <p class="text-2xl font-bold text-blue-600">{{ shipping_count }}</p>
+          </a>
+          <a href="{% url 'order:order_status' %}?filter=delivered"
+             class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition">
+            <p class="text-lg font-semibold text-gray-900">เสร็จสิ้น</p>
+            <p class="text-2xl font-bold text-teal-600">{{ delivered_count }}</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- View All Orders Button -->
+      <div class="mt-8 text-center">
+        <a href="{% url 'order:order_status' %}"
+           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
+          ดูสถานะคำสั่งซื้อทั้งหมด
+        </a>
       </div>
     </div>
   </div>

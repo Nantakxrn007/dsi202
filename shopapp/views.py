@@ -9,6 +9,7 @@ from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
 from cart.views import get_cart
+from order.models import Order
 
 class HomePageView(ListView):
     model = Product
@@ -66,9 +67,22 @@ def signup_view(request):
         form = CustomUserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
-
 @login_required
 def user_profile(request):
+    # Fetch order counts for summary
+    unpaid_count = Order.objects.filter(
+        user=request.user, status='PENDING', payment_status='PENDING'
+    ).count()
+    shipping_count = Order.objects.filter(
+        user=request.user, status__in=['PROCESSING', 'SHIPPED'], payment_status='COMPLETED'
+    ).count()
+    delivered_count = Order.objects.filter(
+        user=request.user, status='DELIVERED'
+    ).count()
+
     return render(request, 'user_profile.html', {
         'user': request.user,
+        'unpaid_count': unpaid_count,
+        'shipping_count': shipping_count,
+        'delivered_count': delivered_count
     })

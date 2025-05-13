@@ -42,7 +42,7 @@
                             <p class="text-sm text-gray-500">สถานะการชำระเงิน: {{ order.get_payment_status_display }}</p>
                             <p class="text-sm text-gray-500">ยอดรวม: {{ order.total_price }} บาท</p>
                         </div>
-                        <div>
+                        <div class="flex space-x-2">
                             {% if order.status == 'PENDING' and order.payment_status == 'PENDING' %}
                             <a href="{% url 'order:payment' order_id=order.id %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
                                 ชำระเงิน
@@ -50,6 +50,10 @@
                             {% elif order.status == 'DELIVERED' %}
                             <a href="{% url 'order:delivered_orders' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
                                 ดูคำสั่งซื้อที่จัดส่งสำเร็จ
+                            </a>
+                            {% elif order.status in 'PROCESSING,SHIPPED' and order.payment_status == 'COMPLETED' %}
+                            <a href="{% url 'order:order_detail' order_id=order.id %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-200">
+                                ดูรายละเอียด
                             </a>
                             {% endif %}
                         </div>
