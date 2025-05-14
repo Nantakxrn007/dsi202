@@ -92,35 +92,37 @@ User Story ที่ 5: อ่าน Blog ความรู้
     * ส่งเสริมการสร้าง **"ชุมชนคนรักโลก"** ที่เหนียวแน่น ร่วมกันหาแนวทางแก้ไขปัญหา และสนับสนุนการดำเนินงานด้านสิ่งแวดล้อมในระดับต่างๆ
 
 
-## วิธีใช้งาน (การติดตั้งและใช้งาน)
+    ## วิธีใช้งาน (การติดตั้งและใช้งาน)
 
-1.  **คัดลอก (clone) โค้ดจาก repository นี้:**
-    ```bash
-    git clone <YOUR_REPOSITORY_URL>
-    ```
-    **(โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL ของ repository ของคุณ)**
+    **1. การติดตั้ง**
 
-1.2 **ระวัง .env **
-    หลังจาก clone โปรเจคเสร็จแล้ว โปรดสร้างไฟล์ .env ในโฟลเดอร์โปรเจค และใส่ค่าดังนี้:
-    ```
-    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=<YOUR_GOOGLE_CLIENT_ID>
-    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
-    EMAIL_HOST_USER=<YOUR_EMAIL>
-    EMAIL_HOST_PASSWORD=<YOUR_EMAIL_APP_PASSWORD>
-    PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
-    ```
+    1.  **คัดลอกโค้ด:** เริ่มต้นด้วยการคัดลอก (clone) โค้ดจาก repository บน Git โดยใช้คำสั่งต่อไปนี้ใน terminal หรือ command prompt:
+        ```bash
+        git clone <YOUR_REPOSITORY_URL>
+        ```
+        **สำคัญ:** โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL จริงของ repository โปรเจคของคุณ
 
-2.  **รันด้วย Docker Compose:**
-    ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Docker และ Docker Compose บนเครื่องของคุณแล้ว จากนั้นรันคำสั่ง:
-    ```bash
-    docker-compose up -d
-    ```
-    คำสั่งนี้จะสร้างและรัน container ที่จำเป็นสำหรับ Treevaq ใน background (`-d`).
+    2.  **.env Configuration:** หลังจากคัดลอกโค้ดเสร็จสมบูรณ์ ให้สร้างไฟล์ชื่อ `.env` ภายในโฟลเดอร์โปรเจคหลัก จากนั้น เพิ่มข้อมูลการตั้งค่าที่จำเป็นดังนี้:
+        ```
+        SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=<YOUR_GOOGLE_CLIENT_ID>
+        SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
+        EMAIL_HOST_USER=<YOUR_EMAIL>
+        EMAIL_HOST_PASSWORD=<YOUR_EMAIL_APP_PASSWORD>
+        PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
+        ```
+        **หมายเหตุ:** ตรวจสอบให้แน่ใจว่าคุณได้แทนที่ `<YOUR_GOOGLE_CLIENT_ID>`, `<YOUR_GOOGLE_CLIENT_SECRET>`, `<YOUR_EMAIL>`, `<YOUR_EMAIL_APP_PASSWORD>`, และ `<YOUR_PROMPTPAY_NUMBER>` ด้วยค่าที่ถูกต้องของคุณ
 
-3.  **เข้าถึง Treevaq ได้ที่:**
-    เมื่อ container เริ่มทำงานแล้ว คุณสามารถเข้าถึงเว็บแอปพลิเคชัน Treevaq ได้ผ่านเว็บเบราว์เซอร์ของคุณที่:
-    ```
-    http://localhost:8000
-    ```
+        **2. การใช้งาน**
 
----
+    1.  **เรียกใช้ Docker Compose:** ก่อนดำเนินการต่อ ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Docker และ Docker Compose บนเครื่องคอมพิวเตอร์ของคุณเรียบร้อยแล้ว จากนั้น เปิด terminal หรือ command prompt ไปที่โฟลเดอร์โปรเจคของคุณ และรันคำสั่งต่อไปนี้เพื่อสร้างและรัน container ที่จำเป็น:
+        ```bash
+        docker-compose up -d
+        ```
+        อาร์กิวเมนต์ `-d` จะสั่งให้ Docker Compose รัน container ในเบื้องหลัง (detached mode)
+
+    2.  **เข้าถึงแอปพลิเคชัน:** เมื่อ Docker Compose สร้างและเริ่ม container ทั้งหมดแล้ว คุณสามารถเข้าถึงเว็บแอปพลิเคชัน Treevaq ผ่านเว็บเบราว์เซอร์ได้ที่ URL ต่อไปนี้:
+        ```
+        http://localhost:8000
+        ```
+
+    ---
