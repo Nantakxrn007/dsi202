@@ -73,5 +73,6 @@ class OrderItem(models.Model):
         verbose_name_plural = 'Order Items'
 
     def __str__(self):
+        product_name = self.product.name if self.product else 'No Product'
         option_name = self.option.name if self.option else 'No Option'
-        return f"{self.quantity} x {self.product.name} ({option_name})"
+        return f"{self.quantity} x {product_name} ({option_name})"
