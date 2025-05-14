@@ -100,6 +100,16 @@ User Story ที่ 5: อ่าน Blog ความรู้
     ```
     **(โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL ของ repository ของคุณ)**
 
+1.2 **ระวัง .env **
+    หลังจาก clone โปรเจคเสร็จแล้ว โปรดสร้างไฟล์ .env ในโฟลเดอร์โปรเจค และใส่ค่าดังนี้:
+    ```
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=<YOUR_GOOGLE_CLIENT_ID>
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
+    EMAIL_HOST_USER=<YOUR_EMAIL>
+    EMAIL_HOST_PASSWORD=<YOUR_EMAIL_APP_PASSWORD>
+    PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
+    ```
+
 2.  **รันด้วย Docker Compose:**
     ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Docker และ Docker Compose บนเครื่องของคุณแล้ว จากนั้นรันคำสั่ง:
     ```bash
