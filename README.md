@@ -29,20 +29,20 @@
 
 ทำให้ทุกคนสามารถร่วมเป็นส่วนหนึ่งของการเปลี่ยนแปลง เพื่อสร้างโลกที่ดีขึ้นได้ ไม่เพียงแต่จากการซื้อสินค้าและใช้จ่ายเท่านั้น แต่ยังสามารถสร้างผลกระทบเชิงบวกผ่านการแบ่งปันความรู้ การสร้างเครือข่าย และการเป็นส่วนหนึ่งของ **"พลังแห่งการเปลี่ยนแปลง"** ที่จะนำไปสู่โลกที่ยั่งยืนอย่างแท้จริง
 
-# 3.2 User Stories: ประสบการณ์การใช้งานบน Treevaq 
-User Story ที่ 1: ซื้อสินค้า 
-User Story ที่ 2: เข้าสู่ระบบ
-User Story ที่ 3: ชำระเงิน
-User Story ที่ 4: แลกเปลี่ยนพูดคุยความรู้ (Community)
-User Story ที่ 5: อ่าน Blog ความรู้
+# 3.2 User Stories: ประสบการณ์การใช้งานบน Treevaq     
+User Story ที่ 1: ซื้อสินค้า    
+User Story ที่ 2: เข้าสู่ระบบ   
+User Story ที่ 3: ชำระเงิน    
+User Story ที่ 4: แลกเปลี่ยนพูดคุยความรู้ (Community)   
+User Story ที่ 5: อ่าน Blog ความรู้     
 
-# 3.3 ขั้นตอนการใช้งานตาม User stories
-Link demo : .....
-
-เพื่อให้เห็นภาพการใช้งานบนแพลตฟอร์ม Treevaq ได้ชัดเจนยิ่งขึ้น นี่คือตัวอย่าง User Stories ที่แสดงถึงการทำงานของระบบจากมุมมองของผู้ใช้งาน:
-
-**User Story ที่ 1: ซื้อสินค้า (สำหรับผู้ใช้ที่เข้าสู่ระบบแล้ว)**
-
+# 3.3 ขั้นตอนการใช้งานตาม User stories  
+Link demo : .....   
+   
+เพื่อให้เห็นภาพการใช้งานบนแพลตฟอร์ม Treevaq ได้ชัดเจนยิ่งขึ้น นี่คือตัวอย่าง User Stories ที่แสดงถึงการทำงานของระบบจากมุมมองของผู้ใช้งาน:   
+  
+**User Story ที่ 1: ซื้อสินค้า (สำหรับผู้ใช้ที่เข้าสู่ระบบแล้ว)**  
+ 
 * **Step 1:** เข้าสู่หน้า Home -> แสดงสินค้าหลากหลายประเภท
 * **Step 2:** คลิกที่สินค้า -> แสดงรายละเอียดสินค้า (รูปภาพ, ราคา, ข้อมูล, คาร์บอนที่ลดได้)
 * **Step 3: เพิ่มลงตะกร้า** -> สินค้าถูกเพิ่มไปยังตะกร้าสินค้า
@@ -79,37 +79,37 @@ Link demo : .....
 * **Step 3:** (ต้องการค้นหา -> กรอกคำค้นหา -> แสดงผลลัพธ์) 
     * **คำอธิบาย:** ผู้ใช้ต้องการอ่านบทความ -> (เลือกบทความ -> แสดงเนื้อหา) 
 
-  # 3.4 วิธีใช้งาน (การติดตั้งและใช้งาน)
 
-    **1. การติดตั้ง**
+# 3.4 วิธีใช้งาน (การติดตั้งและใช้งาน)
+ **1. การติดตั้ง**
 
-    1.  **คัดลอกโค้ด:** เริ่มต้นด้วยการคัดลอก (clone) โค้ดจาก repository บน Git โดยใช้คำสั่งต่อไปนี้ใน terminal หรือ command prompt:
-        ```bash
-        git clone <YOUR_REPOSITORY_URL>
-        ```
-        **สำคัญ:** โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL จริงของ repository โปรเจคของคุณ
+ 1.  **คัดลอกโค้ด:** เริ่มต้นด้วยการคัดลอก (clone) โค้ดจาก repository บน Git โดยใช้คำสั่งต่อไปนี้ใน terminal หรือ command prompt:
+     ```bash
+     git clone <YOUR_REPOSITORY_URL>
+     ```
+     **สำคัญ:** โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL จริงของ repository โปรเจคของคุณ
 
-    2.  **.env Configuration:** หลังจากคัดลอกโค้ดเสร็จสมบูรณ์ ให้สร้างไฟล์ชื่อ `.env` ภายในโฟลเดอร์โปรเจคหลัก จากนั้น เพิ่มข้อมูลการตั้งค่าที่จำเป็นดังนี้:
-        ```
-        SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=<YOUR_GOOGLE_CLIENT_ID>
-        SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
-        EMAIL_HOST_USER=<YOUR_EMAIL>
-        EMAIL_HOST_PASSWORD=<YOUR_EMAIL_APP_PASSWORD>
-        PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
-        ```
-        **หมายเหตุ:** ตรวจสอบให้แน่ใจว่าคุณได้แทนที่ `<YOUR_GOOGLE_CLIENT_ID>`, `<YOUR_GOOGLE_CLIENT_SECRET>`, `<YOUR_EMAIL>`, `<YOUR_EMAIL_APP_PASSWORD>`, และ `<YOUR_PROMPTPAY_NUMBER>` ด้วยค่าที่ถูกต้องของคุณ
+ 2.  **.env Configuration:** หลังจากคัดลอกโค้ดเสร็จสมบูรณ์ ให้สร้างไฟล์ชื่อ `.env` ภายในโฟลเดอร์โปรเจคหลัก จากนั้น เพิ่มข้อมูลการตั้งค่าที่จำเป็นดังนี้:
+     ```
+     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=<YOUR_GOOGLE_CLIENT_ID>   
+     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
+     EMAIL_HOST_USER=<YOUR_EMAIL>
+     EMAIL_HOST_PASSWORD=<YOUR_EMAIL_APP_PASSWORD>
+     PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
+     ```
+     **หมายเหตุ:** ตรวจสอบให้แน่ใจว่าคุณได้แทนที่ `<YOUR_GOOGLE_CLIENT_ID>`, `<YOUR_GOOGLE_CLIENT_SECRET>`, `<YOUR_EMAIL>`, `<YOUR_EMAIL_APP_PASSWORD>`, และ `<YOUR_PROMPTPAY_NUMBER>` ด้วยค่าที่ถูกต้องของคุณ
 
-        **2. การใช้งาน**
+     **2. การใช้งาน**
 
-    1.  **เรียกใช้ Docker Compose:** ก่อนดำเนินการต่อ ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Docker และ Docker Compose บนเครื่องคอมพิวเตอร์ของคุณเรียบร้อยแล้ว จากนั้น เปิด terminal หรือ command prompt ไปที่โฟลเดอร์โปรเจคของคุณ และรันคำสั่งต่อไปนี้เพื่อสร้างและรัน container ที่จำเป็น:
-        ```bash
-        docker-compose up -d
-        ```
-        อาร์กิวเมนต์ `-d` จะสั่งให้ Docker Compose รัน container ในเบื้องหลัง (detached mode)
+ 1.  **เรียกใช้ Docker Compose:** ก่อนดำเนินการต่อ ตรวจสอบให้แน่ใจว่าคุณได้ติดตั้ง Docker และ Docker Compose บนเครื่องคอมพิวเตอร์ของคุณเรียบร้อยแล้ว จากนั้น เปิด terminal หรือ command prompt ไปที่โฟลเดอร์โปรเจคของคุณ และรันคำสั่งต่อไปนี้เพื่อสร้างและรัน container ที่จำเป็น:
+     ```bash
+     docker-compose up -d
+     ```
+     อาร์กิวเมนต์ `-d` จะสั่งให้ Docker Compose รัน container ในเบื้องหลัง (detached mode)
 
-    2.  **เข้าถึงแอปพลิเคชัน:** เมื่อ Docker Compose สร้างและเริ่ม container ทั้งหมดแล้ว คุณสามารถเข้าถึงเว็บแอปพลิเคชัน Treevaq ผ่านเว็บเบราว์เซอร์ได้ที่ URL ต่อไปนี้:
-        ```
-        http://localhost:8000
-        ```
+ 2.  **เข้าถึงแอปพลิเคชัน:** เมื่อ Docker Compose สร้างและเริ่ม container ทั้งหมดแล้ว คุณสามารถเข้าถึงเว็บแอปพลิเคชัน Treevaq ผ่านเว็บเบราว์เซอร์ได้ที่ URL ต่อไปนี้:
+     ```
+     http://localhost:8000
+     ```
 
-    ---
+ ---
