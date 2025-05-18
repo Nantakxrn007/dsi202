@@ -29,37 +29,81 @@
 <body class="font-[Poppins] bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 leading-relaxed scroll-smooth {% block body_class %}{% endblock %}">
 
 <header class="bg-gradient-to-r from-green-800 to-green-700 top-0 z-50 shadow-lg {% block header_class %}sticky text-white{% endblock %}">
-    <div class="w-[90%] max-w-[1400px] mx-auto px-6 flex justify-between items-center flex-wrap py-4">
-        <div class="text-3xl font-bold tracking-tight animate-on-load">
-            <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">🌱 Treeveq</a>
+    <div class="w-[90%] max-w-[1400px] mx-auto px-6 py-4">
+        <div class="flex flex-col items-center md:flex-row justify-between">
+            <div class="text-3xl font-bold tracking-tight animate-on-load text-center mb-3 md:mb-0">
+                <a href="{% url 'home' %}" class="text-white hover:text-yellow-300 transition hover-scale">🌱 Treeveq</a>
+            </div>
+            <div class="flex items-center space-x-4 md:space-x-6">
+                <div class="hidden md:flex space-x-4 animate-on-load">
+                    <a href="{% url 'home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
+                        Home
+                    </a>
+                    <a href="{% url 'share_knowledge:feed' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
+                        Community
+                    </a>
+                    <a href="{% url 'blog_home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
+                        Blog
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <form method="get" action="{% url 'home' %}" class="relative flex items-center animate-on-load w-full max-w-[200px] md:max-w-[250px]">
+                        <input type="text" name="q" placeholder="ค้นหาสินค้า..." value="{{ request.GET.q }}"
+                               class="px-3 py-2 pr-8 w-full rounded-full bg-white bg-opacity-90 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition hover:scale-[1.02] placeholder:text-gray-500 placeholder:opacity-80 text-sm">
+                        <button type="submit"
+                                class="absolute right-1 top-1/2 transform -translate-y-1/2 w-7 h-7 rounded-full bg-gradient-to-br from-green-600 to-green-500 text-white flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none focus:ring-4 focus:ring-yellow-400 focus:ring-opacity-40 search-button"
+                                title="ค้นหา">
+                            🔍
+                        </button>
+                    </form>
+                    <a href="{% url 'cart:view_cart' %}" class="relative inline-block hover:text-yellow-300 transition">
+                        <span class="text-2xl">🛒</span>
+                        {% if cart_item_count > 0 %}
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full shadow-md">
+                                {{ cart_item_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'user_profile' %}"
+                       class="text-sm bg-white bg-opacity-20 border border-white px-3 py-1.5 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale hidden md:block">
+                        Profile
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                       class="text-sm bg-yellow-300 px-3 py-1.5 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale hidden md:block">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <div class="flex items-center space-x-6 mt-3 md:mt-0 flex-grow justify-end">
-            <a href="{% url 'home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale">
+        <div class="flex justify-center mt-5 md:hidden space-x-6 animate-on-load">
+            <a href="{% url 'home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
                 Home
             </a>
-            <a href="{% url 'share_knowledge:feed' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale">
+            <a href="{% url 'share_knowledge:feed' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
                 Community
             </a>
-            <a href="{% url 'blog_home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale">
+            <a href="{% url 'blog_home' %}" class="bg-white text-green-700 font-bold py-2 px-4 rounded-full hover:bg-green-100 transition shadow hover-scale text-sm">
                 Blog
             </a>
-
-            <a href="{% url 'cart:view_cart' %}" class="relative text-2xl hover:text-yellow-300 transition">
-                🛒
-            </a>
-            {% if user.is_authenticated %}
-            <a href="{% url 'user_profile' %}"
-               class="text-sm bg-white bg-opacity-20 border border-white px-3 py-1.5 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale">
-                โปรไฟล์
-            </a>
-            {% else %}
-            <a href="{% url 'login' %}"
-               class="text-sm bg-yellow-300 px-3 py-1.5 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale">
-                เข้าสู่ระบบ
-            </a>
-            {% endif %}
         </div>
-
+        {% if user.is_authenticated %}
+        <div class="mt-5 md:hidden text-center">
+            <a href="{% url 'user_profile' %}"
+               class="text-sm bg-white bg-opacity-20 border border-white px-3 py-1.5 rounded-full text-white hover:bg-yellow-300 hover:text-green-900 transition font-medium shadow hover-scale inline-block">
+                Profile
+            </a>
+        </div>
+        {% else %}
+        <div class="mt-5 md:hidden text-center">
+            <a href="{% url 'login' %}"
+               class="text-sm bg-yellow-300 px-3 py-1.5 rounded-full text-green-900 hover:bg-yellow-200 transition font-medium shadow hover-scale inline-block">
+                Login
+            </a>
+        </div>
+        {% endif %}
     </div>
 </header>
 
@@ -78,8 +122,6 @@
         <p class="text-sm opacity-90">© 2025 Treeveq. All rights reserved.</p>
     </div>
 </footer>
-
-
 
 <script>
     function increaseQty() {
