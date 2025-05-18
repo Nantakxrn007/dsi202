@@ -4,52 +4,52 @@
 {% block title %}ตะกร้าสินค้า{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-16 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto">
-        <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-tight">
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-8 tracking-tight">
                 ตะกร้าสินค้าของคุณ
             </h2>
 
             {% if cart.items.all %}
-            <div class="space-y-8">
+            <div class="space-y-6">
                 {% for item in cart.items.all %}
-                <div class="bg-white rounded-2xl shadow-md p-6 transition-all duration-300 border border-gray-100">
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
+                    <div class="flex flex-col sm:grid sm:grid-cols-5 gap-4 sm:gap-6">
                         <!-- Product Image and Name -->
                         <div class="col-span-2 flex items-center space-x-4">
-                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg shadow-sm">
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-900">{{ item.product.name }}</h3>
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">{{ item.product.name }}</h3>
                                 {% if item.option %}
-                                <p class="text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
+                                <p class="text-xs sm:text-sm text-gray-500">ตัวเลือก: {{ item.option.name }}</p>
                                 {% endif %}
                             </div>
                         </div>
 
                         <!-- Price and Carbon Reduction -->
-                        <div class="flex flex-col space-y-1 text-center">
-                            <p class="text-lg font-semibold text-red-600">{{ item.product.price }} บาท</p>
-                            <p class="text-sm text-green-600">ลดคาร์บอน: {{ item.carbon_reduction }} กก.</p>
+                        <div class="flex flex-col space-y-1 text-center sm:col-span-1">
+                            <p class="text-base sm:text-lg font-semibold text-red-600">{{ item.product.price }} บาท</p>
+                            <p class="text-xs sm:text-sm text-green-600">ลดคาร์บอน: {{ item.carbon_reduction }} กก.</p>
                         </div>
 
                         <!-- Form for Options and Quantity -->
-                        <div class="flex flex-col space-y-4">
+                        <div class="flex flex-col space-y-4 sm:col-span-1">
                             <form method="post" action="{% url 'cart:update_cart_item' item.id %}">
                                 {% csrf_token %}
                                 <div>
-                                    <label for="option_{{ item.id }}" class="block text-sm font-medium text-gray-700">ตัวเลือก</label>
-                                    <select name="option_id" id="option_{{ item.id }}" class="mt-1 w-full sm:w-48 border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50">
+                                    <label for="option_{{ item.id }}" class="block text-xs sm:text-sm font-medium text-gray-700">ตัวเลือก</label>
+                                    <select name="option_id" id="option_{{ item.id }}" class="mt-1 w-full border border-gray-300 rounded-lg p-2 text-xs sm:text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50">
                                         <option value="">-- เลือกตัวเลือก --</option>
                                         {% for option in item.product.options.all %}
                                         <option value="{{ option.id }}" {% if item.option.id == option.id %}selected{% endif %}>{{ option.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="flex items-center space-x-3 mt-3">
-                                    <label for="quantity_{{ item.id }}" class="text-sm font-medium text-gray-700">จำนวน</label>
-                                    <input type="number" name="quantity" id="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1" class="w-16 border border-gray-300 rounded-lg p-2 text-center text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200">
-                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200">
+                                <div class="flex items-center space-x-2 mt-2">
+                                    <label for="quantity_{{ item.id }}" class="text-xs sm:text-sm font-medium text-gray-700">จำนวน</label>
+                                    <input type="number" name="quantity" id="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1" class="w-16 border border-gray-300 rounded-lg p-1.5 text-center text-xs sm:text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-1.5 px-3 rounded-lg text-xs sm:text-sm">
                                         อัปเดต
                                     </button>
                                 </div>
@@ -57,12 +57,12 @@
                         </div>
 
                         <!-- Total and Remove Button -->
-                        <div class="flex flex-col items-end space-y-2">
-                            <p class="text-lg font-bold text-gray-900">{{ item.total_price }} บาท</p>
+                        <div class="flex flex-col items-end space-y-2 sm:col-span-1">
+                            <p class="text-base sm:text-lg font-bold text-gray-900">{{ item.total_price }} บาท</p>
                             <form method="POST" action="{% url 'cart:remove_from_cart' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" class="bg-red-100 hover:bg-red-200 text-red-600 font-medium py-2 px-4 rounded-lg transition-all duration-200 flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <button type="submit" class="bg-red-100 hover:bg-red-200 text-red-600 font-medium py-1.5 px-3 rounded-lg flex items-center space-x-1 text-xs sm:text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7v12m6-12v12" />
                                     </svg>
                                     <span>ลบ</span>
@@ -75,25 +75,25 @@
             </div>
 
             <!-- Cart Summary -->
-            <div class="mt-12 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl p-8 shadow-md">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div class="mt-8 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="text-center sm:text-left">
-                        <p class="text-xl font-semibold text-gray-800">ยอดรวม: <span class="text-green-600">{{ cart.total_price }} บาท</span></p>
-                        <p class="text-lg text-gray-700">ลดคาร์บอน: <span class="text-green-600">{{ cart.total_carbon_reduction }} กก.</span></p>
+                        <p class="text-lg sm:text-xl font-semibold text-gray-800">ยอดรวม: <span class="text-green-600">{{ cart.total_price }} บาท</span></p>
+                        <p class="text-base sm:text-lg text-gray-700">ลดคาร์บอน: <span class="text-green-600">{{ cart.total_carbon_reduction }} กก.</span></p>
                     </div>
-                    <a href="{% url 'order:checkout' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200">
+                    <a href="{% url 'order:checkout' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-lg shadow-sm text-sm sm:text-base">
                         ดำเนินการสั่งซื้อ
                     </a>
                 </div>
             </div>
 
             {% else %}
-            <div class="text-center py-16">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="text-center py-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <p class="mt-4 text-lg text-gray-500">ตะกร้าสินค้าของคุณว่างเปล่า</p>
-                <a href="{% url 'home' %}" class="mt-6 inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200">
+                <p class="mt-3 text-base sm:text-lg text-gray-500">ตะกร้าสินค้าของคุณว่างเปล่า</p>
+                <a href="{% url 'home' %}" class="mt-4 inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-5 rounded-lg text-sm sm:text-base">
                     ไปเลือกซื้อสินค้า
                 </a>
             </div>
