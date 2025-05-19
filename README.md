@@ -87,7 +87,7 @@ Link demo : .....
      ```bash
      git clone <YOUR_REPOSITORY_URL>
      ```
-     **สำคัญ:** โปรดแทนที่ `<YOUR_REPOSITORY_URL>` ด้วย URL จริงของ repository โปรเจคของคุณ
+     **สำคัญ:** โปรดแทนที่ `<https://github.com/Nantakxrn007/dsi202_2025.git>` ด้วย URL จริงของ repository โปรเจคของคุณ
 
  2.  **.env Configuration:** หลังจากคัดลอกโค้ดเสร็จสมบูรณ์ ให้สร้างไฟล์ชื่อ `.env` ภายในโฟลเดอร์โปรเจคหลัก จากนั้น เพิ่มข้อมูลการตั้งค่าที่จำเป็นดังนี้:
      ```
