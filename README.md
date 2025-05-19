@@ -98,6 +98,7 @@ Link demo : https://youtube.com/shorts/kg4dBRxSwbU?si=GKVkFbcdnWwlYxF-
      PROMPTPAY_ID=<YOUR_PROMPTPAY_NUMBER>
      ```
      **หมายเหตุ:** ตรวจสอบให้แน่ใจว่าคุณได้แทนที่ `<YOUR_GOOGLE_CLIENT_ID>`, `<YOUR_GOOGLE_CLIENT_SECRET>`, `<YOUR_EMAIL>`, `<YOUR_EMAIL_APP_PASSWORD>`, และ `<YOUR_PROMPTPAY_NUMBER>` ด้วยค่าที่ถูกต้องของคุณ
+     และระวังเรื่องของระบบปฏิบัติการ #มีการเปลี่ยนสิทธิ์ให้ไฟล์ wait-for-it.sh สามารถรันได้ chmod +x /app/wait-for-it.sh 
 
      **2. การใช้งาน**
 
@@ -111,5 +112,5 @@ Link demo : https://youtube.com/shorts/kg4dBRxSwbU?si=GKVkFbcdnWwlYxF-
      ```
      http://localhost:8000
      ```
-
+   
  ---
