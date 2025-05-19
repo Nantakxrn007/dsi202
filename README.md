@@ -85,7 +85,7 @@ Link demo : https://youtube.com/shorts/kg4dBRxSwbU?si=GKVkFbcdnWwlYxF-
 
  1.  **คัดลอกโค้ด:** เริ่มต้นด้วยการคัดลอก (clone) โค้ดจาก repository บน Git โดยใช้คำสั่งต่อไปนี้ใน terminal หรือ command prompt:
      ```bash
-     git clone <YOUR_REPOSITORY_URL>
+     git clone <https://github.com/Nantakxrn007/dsi202_2025.git>
      ```
      **สำคัญ:** โปรดแทนที่ `<https://github.com/Nantakxrn007/dsi202_2025.git>` ด้วย URL จริงของ repository โปรเจคของคุณ
 
